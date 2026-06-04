@@ -559,11 +559,11 @@ function Hero() {
       shape: 'square',   // 'square' | 'circle' | 'diamond' | 'spark'
       sampleStep: 10,
       noiseIntensity: 2.5,
-      speed: 0.05,
-      damping: 0.88,
+      speed: 0.032,
+      damping: 0.91,
       scatterMode: "radial",
       repulsionRadius: 60,
-      repulsionStrength: 2.5,
+      repulsionStrength: 3,
       minBrightness: 30,
       maxBrightness: 220,
     });
@@ -1090,41 +1090,101 @@ function BrandsStrip() {
 }
 
 function CTABanner() {
+  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // 'idle' | 'sending' | 'sent'
+
+  function handleChange(e) {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("sending");
+    // Opens the user's mail client pre-filled — swap for a real API endpoint when ready
+    const subject = encodeURIComponent(`Quote Request from ${form.name}`);
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\n\n${form.message}`
+    );
+    window.location.href = `mailto:info@bloomelectrical.co.nz?subject=${subject}&body=${body}`;
+    setStatus("sent");
+  }
+
+  const inputStyle = {
+    width: "100%", padding: "13px 16px",
+    background: "rgba(0,0,0,0.18)", border: "1.5px solid rgba(15,17,23,0.35)",
+    borderRadius: 3, color: "#0F1117", fontSize: "0.93rem",
+    fontFamily: "'DM Sans', sans-serif", outline: "none",
+    transition: "border-color 0.2s",
+  };
+
   return (
     <section id="contact" style={{ background: "#F59E0B", padding: "72px 24px" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-        <h2 className="font-display" style={{
-          fontSize: "clamp(2rem, 4vw, 3.2rem)",
-          fontWeight: 800,
-          textTransform: "uppercase",
-          color: "#0F1117",
-          lineHeight: 1.05,
-          marginBottom: 16,
-        }}>
-          Got an electrical or property job that needs doing?
-        </h2>
-        <p style={{ color: "#1A1D27", fontSize: "1rem", lineHeight: 1.6, marginBottom: 36, maxWidth: 560, margin: "0 auto 36px" }}>
-          Get in touch with Bloom Electrical today — no obligation quote, transparent pricing, quality guaranteed.
-        </p>
-
-        <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="mailto:info@bloomelectrical.co.nz" style={{
-            background: "#0F1117", color: "#F5F5F0",
-            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
-            fontSize: "1rem", letterSpacing: "0.05em", textTransform: "uppercase",
-            padding: "14px 28px", border: "none", borderRadius: 3, cursor: "pointer",
-            textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8,
-            transition: "background 0.2s",
-          }}
-            onMouseEnter={e => e.currentTarget.style.background = "#1A1D27"}
-            onMouseLeave={e => e.currentTarget.style.background = "#0F1117"}
-          >
-            <Mail size={16} /> Get a Free Quote
-          </a>
-          <a href="tel:0800225666" className="btn-dark-outline" style={{ borderColor: "#0F1117" }}>
-            <Phone size={16} /> Call 0800 225 666
-          </a>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        {/* Heading */}
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <h2 className="font-display" style={{
+            fontSize: "clamp(2rem, 4vw, 3.2rem)",
+            fontWeight: 800, textTransform: "uppercase",
+            color: "#0F1117", lineHeight: 1.05, marginBottom: 16,
+          }}>
+            Got an electrical or property job that needs doing?
+          </h2>
+          <p style={{ color: "#1A1D27", fontSize: "1rem", lineHeight: 1.6, maxWidth: 520, margin: "0 auto" }}>
+            Fill in the form and we'll get back to you with a no-obligation quote.
+          </p>
         </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <input
+            name="name" type="text" placeholder="Your Name" required
+            value={form.name} onChange={handleChange}
+            style={inputStyle}
+            onFocus={e => e.target.style.borderColor = "rgba(15,17,23,0.7)"}
+            onBlur={e => e.target.style.borderColor = "rgba(15,17,23,0.35)"}
+          />
+          <input
+            name="phone" type="tel" placeholder="Phone Number"
+            value={form.phone} onChange={handleChange}
+            style={inputStyle}
+            onFocus={e => e.target.style.borderColor = "rgba(15,17,23,0.7)"}
+            onBlur={e => e.target.style.borderColor = "rgba(15,17,23,0.35)"}
+          />
+          <input
+            name="email" type="email" placeholder="Email Address" required
+            value={form.email} onChange={handleChange}
+            style={{ ...inputStyle, gridColumn: "1 / -1" }}
+            onFocus={e => e.target.style.borderColor = "rgba(15,17,23,0.7)"}
+            onBlur={e => e.target.style.borderColor = "rgba(15,17,23,0.35)"}
+          />
+          <textarea
+            name="message" placeholder="Tell us about your job…" rows={4} required
+            value={form.message} onChange={handleChange}
+            style={{ ...inputStyle, gridColumn: "1 / -1", resize: "vertical" }}
+            onFocus={e => e.target.style.borderColor = "rgba(15,17,23,0.7)"}
+            onBlur={e => e.target.style.borderColor = "rgba(15,17,23,0.35)"}
+          />
+          <div style={{ gridColumn: "1 / -1", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginTop: 4 }}>
+            <div style={{ display: "flex", gap: 12 }}>
+              <a href="tel:0800225666" className="btn-dark-outline" style={{ borderColor: "#0F1117" }}>
+                <Phone size={16} /> Call 0800 225 666
+              </a>
+            </div>
+            <button type="submit" disabled={status === "sending"} style={{
+              background: "#0F1117", color: "#F5F5F0",
+              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+              fontSize: "1rem", letterSpacing: "0.05em", textTransform: "uppercase",
+              padding: "14px 32px", border: "none", borderRadius: 3, cursor: "pointer",
+              display: "inline-flex", alignItems: "center", gap: 8, transition: "background 0.2s",
+              opacity: status === "sending" ? 0.7 : 1,
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = "#1A1D27"}
+              onMouseLeave={e => e.currentTarget.style.background = "#0F1117"}
+            >
+              {status === "sent" ? "Request Sent ✓" : <><Mail size={16} /> Send Enquiry</>}
+            </button>
+          </div>
+        </form>
       </div>
     </section>
   );
@@ -1133,30 +1193,6 @@ function CTABanner() {
 function Footer() {
   return (
     <footer style={{ background: "#0F1117" }}>
-      {/* Map — full width, no text, top fade into dark bg */}
-      <div style={{ position: "relative", width: "100%", height: 380, overflow: "hidden" }}>
-        <iframe
-          title="Bloom Electrical Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3192.4!2d174.9021!3d-37.0647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s82B+Spartan+Road%2C+Takanini%2C+Auckland!5e0!3m2!1sen!2snz!4v1"
-          width="100%"
-          height="100%"
-          style={{ border: 0, display: "block", filter: "grayscale(1) invert(0.92) contrast(0.88) brightness(0.7) hue-rotate(180deg)" }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-        {/* Top fade into footer background */}
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: 120,
-          background: "linear-gradient(to bottom, #0F1117 0%, transparent 100%)",
-          pointerEvents: "none",
-        }} />
-        {/* Amber location pin */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#F59E0B", boxShadow: "0 0 0 5px rgba(245,158,11,0.2), 0 0 20px rgba(245,158,11,0.5)" }} />
-        </div>
-      </div>
-
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
         <div style={{
           display: "grid",
@@ -1254,6 +1290,28 @@ function Footer() {
             <Shield size={12} color="#F59E0B" />
             <span style={{ color: "#9CA3AF", fontSize: "0.78rem" }}>Licensed & Insured</span>
           </div>
+        </div>
+      </div>
+
+      {/* Map — full width, below footer links, top fade blends with footer */}
+      <div style={{ position: "relative", width: "100%", height: 340, overflow: "hidden" }}>
+        <iframe
+          title="Bloom Electrical Location"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3192.4!2d174.9021!3d-37.0647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s82B+Spartan+Road%2C+Takanini%2C+Auckland!5e0!3m2!1sen!2snz!4v1"
+          width="100%"
+          height="100%"
+          style={{ border: 0, display: "block", filter: "grayscale(1) invert(0.92) contrast(0.88) brightness(0.7) hue-rotate(180deg)" }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: 100,
+          background: "linear-gradient(to bottom, #0F1117 0%, transparent 100%)",
+          pointerEvents: "none",
+        }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#F59E0B", boxShadow: "0 0 0 5px rgba(245,158,11,0.2), 0 0 20px rgba(245,158,11,0.5)" }} />
         </div>
       </div>
     </footer>

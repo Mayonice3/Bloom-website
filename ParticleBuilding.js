@@ -97,15 +97,20 @@ export function initParticleBuilding(containerId, imageUrl, options = {}) {
   /* ── Mouse tracking ────────────────────────────────────────────── */
   // Park off-screen so particles are never repelled before the first move.
   let mouseX = -9999, mouseY = -9999;
+  let mouseVX = 0, mouseVY = 0; // velocity in px per mousemove event
 
   function onMouseMove(e) {
     const rect = container.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
+    const nx = e.clientX - rect.left;
+    const ny = e.clientY - rect.top;
+    mouseVX = nx - mouseX;
+    mouseVY = ny - mouseY;
+    mouseX = nx;
+    mouseY = ny;
   }
   function onMouseLeave() {
-    mouseX = -9999;
-    mouseY = -9999;
+    mouseX = -9999; mouseY = -9999;
+    mouseVX = 0;    mouseVY = 0;
   }
 
   container.addEventListener('mousemove', onMouseMove);
@@ -244,8 +249,11 @@ export function initParticleBuilding(containerId, imageUrl, options = {}) {
   }
 
   /* ── Animation loop ─────────────────────────────────────────────── */
-  let rafId = null;
+  let rafId     = null;
   let startTime = null;
+  // 'building' → smooth lerp into place (no bounce)
+  // 'settled'  → spring + noise + mouse repulsion
+  let phase = 'building';
 
   function tick(timestamp) {
     if (!startTime) startTime = timestamp;
@@ -253,39 +261,52 @@ export function initParticleBuilding(containerId, imageUrl, options = {}) {
 
     ctx.clearRect(0, 0, cssW, cssH);
 
+    // Decay mouse velocity between frames so the speed boost fades naturally
+    mouseVX *= 0.78;
+    mouseVY *= 0.78;
+
+    let arrivedCount = 0;
+
     for (let k = 0; k < count; k++) {
-      // Noise-displaced target
       const no = noiseOff[k];
-      const nx = noise2d(tgtX[k] + no, tgtY[k], t) * noiseIntensity;
-      const ny = noise2d(tgtX[k], tgtY[k] + no, t + 1.7) * noiseIntensity;
 
-      const goalX = tgtX[k] + nx;
-      const goalY = tgtY[k] + ny;
+      if (phase === 'building') {
+        // ── Smooth ease-in: lerp toward exact target, no noise, no bounce ──
+        const dx = tgtX[k] - posX[k];
+        const dy = tgtY[k] - posY[k];
+        posX[k] += dx * 0.065;
+        posY[k] += dy * 0.065;
+        velX[k] = 0;
+        velY[k] = 0;
+        if (Math.abs(dx) < 1.5 && Math.abs(dy) < 1.5) arrivedCount++;
+      } else {
+        // ── Settled: spring toward noise-displaced target + mouse repulsion ──
+        const goalX = tgtX[k] + noise2d(tgtX[k] + no, tgtY[k],      t) * noiseIntensity;
+        const goalY = tgtY[k] + noise2d(tgtX[k],      tgtY[k] + no, t + 1.7) * noiseIntensity;
 
-      // Spring force toward (noise-displaced) target
-      velX[k] += (goalX - posX[k]) * speed;
-      velY[k] += (goalY - posY[k]) * speed;
+        velX[k] += (goalX - posX[k]) * speed;
+        velY[k] += (goalY - posY[k]) * speed;
 
-      // Mouse repulsion
-      if (mouseRepulsion) {
-        const mdx = posX[k] - mouseX;
-        const mdy = posY[k] - mouseY;
-        const dist2 = mdx * mdx + mdy * mdy;
-        if (dist2 < repulsionRadius * repulsionRadius && dist2 > 0) {
-          const dist = Math.sqrt(dist2);
-          // Force falls off linearly to zero at the edge of the radius
-          const force = (1 - dist / repulsionRadius) * repulsionStrength;
-          velX[k] += (mdx / dist) * force;
-          velY[k] += (mdy / dist) * force;
+        // Mouse repulsion — dust-spread, scaled by cursor speed
+        if (mouseRepulsion) {
+          const mdx   = posX[k] - mouseX;
+          const mdy   = posY[k] - mouseY;
+          const dist2 = mdx * mdx + mdy * mdy;
+          if (dist2 < repulsionRadius * repulsionRadius && dist2 > 0) {
+            const dist       = Math.sqrt(dist2);
+            const mouseSpeed = Math.sqrt(mouseVX * mouseVX + mouseVY * mouseVY);
+            const speedMult  = 1 + Math.min(mouseSpeed * 0.12, 4);
+            const force      = (1 - dist / repulsionRadius) * repulsionStrength * speedMult;
+            velX[k] += (mdx / dist) * force;
+            velY[k] += (mdy / dist) * force;
+          }
         }
+
+        velX[k] *= damping;
+        velY[k] *= damping;
+        posX[k] += velX[k];
+        posY[k] += velY[k];
       }
-
-      // Damping
-      velX[k] *= damping;
-      velY[k] *= damping;
-
-      posX[k] += velX[k];
-      posY[k] += velY[k];
 
       // Draw — orange: half size + 40% opacity; yellow/default: full size + full opacity
       const type = particleType[k];
@@ -323,6 +344,12 @@ export function initParticleBuilding(containerId, imageUrl, options = {}) {
     }
 
     ctx.globalAlpha = 1;
+
+    // Transition to settled once 90% of particles are within 1.5px of their target
+    if (phase === 'building' && arrivedCount > count * 0.9) {
+      phase = 'settled';
+    }
+
     rafId = requestAnimationFrame(tick);
   }
 
@@ -376,6 +403,7 @@ export function initParticleBuilding(containerId, imageUrl, options = {}) {
       if (!loadedImg) return;
       if (rafId) cancelAnimationFrame(rafId);
       startTime = null;
+      phase = 'building';
       buildParticlesFromImage(loadedImg);
       rafId = requestAnimationFrame(tick);
     },
