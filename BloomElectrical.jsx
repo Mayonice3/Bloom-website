@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { initParticleBuilding } from "./ParticleBuilding.js";
 import {
   Zap, Wrench, Phone, Mail, MapPin, Clock, Shield, Star,
   ArrowRight, Menu, X, Facebook, Instagram,
-  ChevronRight, Flame, Home, Building2, Users, Briefcase,
-  Battery, Camera, Wifi, Paintbrush, Droplets, Layers,
-  PlugZap, Sun, Car, ThumbsUp
+  ChevronRight, Home, Building2, Users, Briefcase, Layers,
 } from "lucide-react";
 
 /* ─── Google Fonts ─────────────────────────────────────────────── */
@@ -341,24 +340,31 @@ style.textContent = `
 document.head.appendChild(style);
 
 /* ─── Data ──────────────────────────────────────────────────────── */
+// ─── Hero background mode ────────────────────────────────────────────────────
+// 'particles' → animated particle field built from the image below
+// 'image'     → plain background image, no canvas overhead
+const HERO_BG_MODE = 'particles';
+const HERO_BG_IMAGE = `${import.meta.env.BASE_URL}Particle-building-5.png`;
+// ─────────────────────────────────────────────────────────────────────────────
+
 const navLinks = ["Home", "About", "Services", "Projects", "Testimonials", "Contact"];
 
 const electricalServices = [
-  "General Electrical","Lighting","Switchboards & Upgrades","Fault Finding",
-  "EV Charging","Heat Pumps & HVAC","Ventilation","Solar Installation",
-  "Battery Storage","CCTV","Security & Alarms","Smart Home"
+  "General Electrical", "Lighting", "Switchboards & Upgrades", "Fault Finding",
+  "EV Charging", "Heat Pumps & HVAC", "Ventilation", "Solar Installation",
+  "Battery Storage", "CCTV", "Security & Alarms", "Smart Home"
 ];
 const buildingServices = [
-  "Full Renovations","Bathroom Renos","Kitchen Renos","Interior Upgrades",
-  "Interior & Exterior Painting","Plumbing","Leak Repairs","Waterproofing",
-  "Tiling","Kitchen Splashbacks","Handyman","Landlord Maintenance"
+  "Full Renovations", "Bathroom Renos", "Kitchen Renos", "Interior Upgrades",
+  "Interior & Exterior Painting", "Plumbing", "Leak Repairs", "Waterproofing",
+  "Tiling", "Kitchen Splashbacks", "Handyman", "Landlord Maintenance"
 ];
 
 const stats = [
-  { Icon: Clock,   value: "24/7",   label: "Emergency Response Available" },
-  { Icon: Layers,  value: "8+",     label: "Services — One Team, Every Trade" },
-  { Icon: Shield,  value: "100%",   label: "Licensed & Insured" },
-  { Icon: Phone,   value: "1 Call", label: "To Get Everything Sorted" },
+  { Icon: Clock, value: "24/7", label: "Emergency Response Available" },
+  { Icon: Layers, value: "8+", label: "Services — One Team, Every Trade" },
+  { Icon: Shield, value: "100%", label: "Licensed & Insured" },
+  { Icon: Phone, value: "1 Call", label: "To Get Everything Sorted" },
 ];
 
 const steps = [
@@ -368,9 +374,9 @@ const steps = [
 ];
 
 const projects = [
-  { tag: "Electrical", title: "Commercial Kitchen Fit-Out",       sub: "Charcoal Chicken, Auckland", img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&auto=format&fit=crop&q=80" },
-  { tag: "Solar & EV", title: "Solar + EV Charger Installation",  sub: "Residential, Takanini",      img: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&auto=format&fit=crop&q=80" },
-  { tag: "Renovation", title: "Bathroom Renovation",              sub: "Rental Property, Manukau",   img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&auto=format&fit=crop&q=80" },
+  { tag: "Electrical", title: "Commercial Kitchen Fit-Out", sub: "Charcoal Chicken, Auckland", img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&auto=format&fit=crop&q=80" },
+  { tag: "Solar & EV", title: "Solar + EV Charger Installation", sub: "Residential, Takanini", img: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&auto=format&fit=crop&q=80" },
+  { tag: "Renovation", title: "Bathroom Renovation", sub: "Rental Property, Manukau", img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&auto=format&fit=crop&q=80" },
 ];
 
 const testimonials = [
@@ -401,31 +407,31 @@ const clients = [
 ];
 
 const brands = [
-  { name: "Rinnai",    logo: "https://logo.clearbit.com/rinnai.com" },
-  { name: "Haier",     logo: "https://logo.clearbit.com/haier.com" },
-  { name: "ABB",       logo: "https://logo.clearbit.com/abb.com" },
+  { name: "Rinnai", logo: "https://logo.clearbit.com/rinnai.com" },
+  { name: "Haier", logo: "https://logo.clearbit.com/haier.com" },
+  { name: "ABB", logo: "https://logo.clearbit.com/abb.com" },
   { name: "Panasonic", logo: "https://logo.clearbit.com/panasonic.com" },
-  { name: "PDL",       logo: "https://logo.clearbit.com/pdl.co.nz" },
-  { name: "Daikin",    logo: "https://logo.clearbit.com/daikin.com" },
+  { name: "PDL", logo: "https://logo.clearbit.com/pdl.co.nz" },
+  { name: "Daikin", logo: "https://logo.clearbit.com/daikin.com" },
   { name: "Schneider", logo: "https://logo.clearbit.com/se.com" },
-  { name: "Prolux",    logo: "https://logo.clearbit.com/prolux.co.nz" },
-  { name: "Superlux",  logo: "https://logo.clearbit.com/superlux.co.nz" },
-  { name: "G-Light",   logo: "https://logo.clearbit.com/g-light.co.nz" },
+  { name: "Prolux", logo: "https://logo.clearbit.com/prolux.co.nz" },
+  { name: "Superlux", logo: "https://logo.clearbit.com/superlux.co.nz" },
+  { name: "G-Light", logo: "https://logo.clearbit.com/g-light.co.nz" },
   { name: "Provision", logo: "https://logo.clearbit.com/provision-isr.com" },
-  { name: "Parmaco",   logo: "https://logo.clearbit.com/parmaco.co.nz" },
+  { name: "Parmaco", logo: "https://logo.clearbit.com/parmaco.co.nz" },
 ];
 
 const footerElec = [
-  "General Electrical","Lighting & Fit-outs","Switchboards & Upgrades",
-  "Fault Finding","EV Charging","Heat Pumps & HVAC","Solar Installation",
-  "Battery Storage","CCTV & Security","Smart Home"
+  "General Electrical", "Lighting & Fit-outs", "Switchboards & Upgrades",
+  "Fault Finding", "EV Charging", "Heat Pumps & HVAC", "Solar Installation",
+  "Battery Storage", "CCTV & Security", "Smart Home"
 ];
 const footerBuild = [
-  "Full Renovations","Bathroom & Kitchen Renos","Painting (Interior & Exterior)",
-  "Plumbing & Leak Repairs","Waterproofing","Tiling & Splashbacks",
-  "Handyman Services","Landlord Maintenance"
+  "Full Renovations", "Bathroom & Kitchen Renos", "Painting (Interior & Exterior)",
+  "Plumbing & Leak Repairs", "Waterproofing", "Tiling & Splashbacks",
+  "Handyman Services", "Landlord Maintenance"
 ];
-const quickLinks = ["Home","About Us","Services","Projects","Contact"];
+const quickLinks = ["Home", "About Us", "Services", "Projects", "Contact"];
 
 /* ─── Sub-components ─────────────────────────────────────────────── */
 
@@ -546,16 +552,48 @@ function Navbar({ scrolled }) {
 }
 
 function Hero() {
+  useEffect(() => {
+    if (HERO_BG_MODE !== 'particles') return;
+    const effect = initParticleBuilding("home", HERO_BG_IMAGE, {
+      particleSize: 4,   // orange particles render at 2px (0.5×), others at 4px
+      shape: 'square',   // 'square' | 'circle' | 'diamond' | 'spark'
+      sampleStep: 10,
+      noiseIntensity: 2.5,
+      speed: 0.05,
+      damping: 0.88,
+      scatterMode: "radial",
+      repulsionRadius: 60,
+      repulsionStrength: 2.5,
+      minBrightness: 30,
+      maxBrightness: 220,
+    });
+    const cv = document.getElementById("home").lastElementChild;
+    if (cv?.tagName === "CANVAS") cv.style.zIndex = "1";
+    return () => effect.destroy();
+  }, []);
+
   return (
     <section id="home" className="noise cut-bottom" style={{
       minHeight: "100vh",
       background: "#0F1117",
       position: "relative",
+      overflow: "hidden",
       display: "flex", alignItems: "center",
       paddingTop: 64,
     }}>
       {/* diagonal pattern */}
       <div className="hero-pattern" style={{ position: "absolute", inset: 0, zIndex: 0 }} />
+
+      {/* static background image mode */}
+      {HERO_BG_MODE === 'image' && (
+        <div style={{
+          position: "absolute", inset: 0, zIndex: 1,
+          backgroundImage: `url(${HERO_BG_IMAGE})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.5,
+        }} />
+      )}
 
       {/* amber accent line top-right */}
       <div style={{
