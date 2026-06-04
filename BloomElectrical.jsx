@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import {
   Zap, Wrench, Phone, Mail, MapPin, Clock, Shield, Star,
-  CheckCircle, ArrowRight, Menu, X, Facebook, Instagram,
+  ArrowRight, Menu, X, Facebook, Instagram,
   ChevronRight, Flame, Home, Building2, Users, Briefcase,
   Battery, Camera, Wifi, Paintbrush, Droplets, Layers,
   PlugZap, Sun, Car, ThumbsUp
@@ -415,10 +415,6 @@ const brands = [
   { name: "Parmaco",   logo: "https://logo.clearbit.com/parmaco.co.nz" },
 ];
 
-const locations = [
-  { label: "Bloom Electrical HQ", address: "82B Spartan Road, Takanini, Auckland", lat: -37.0647, lng: 174.9021 },
-];
-
 const footerElec = [
   "General Electrical","Lighting & Fit-outs","Switchboards & Upgrades",
   "Fault Finding","EV Charging","Heat Pumps & HVAC","Solar Installation",
@@ -800,7 +796,6 @@ function Services() {
         height: "72vh",
         minHeight: 500,
         maxHeight: 700,
-        borderTop: "1px solid #2A2D3A",
         overflow: "hidden",
       }}>
         <ServicePanel
@@ -825,7 +820,7 @@ function Services() {
 
 function HowItWorks() {
   return (
-    <section id="about" style={{ background: "#0F1117", borderTop: "1px solid #2A2D3A", borderBottom: "1px solid #2A2D3A" }}>
+    <section id="about" style={{ background: "#0F1117" }}>
       {/* Process steps */}
       <div style={{ padding: "80px 24px 56px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
@@ -877,7 +872,7 @@ function HowItWorks() {
       </div>
 
       {/* Stat cards */}
-      <div style={{ borderTop: "1px solid #2A2D3A", padding: "24px 0" }}>
+      <div style={{ padding: "24px 0" }}>
         <div style={{
           width: "80%",
           margin: "0 auto",
@@ -942,7 +937,7 @@ function HowItWorks() {
 
 function Projects() {
   return (
-    <section id="projects" style={{ background: "#0F1117", padding: "80px 24px", borderTop: "1px solid #2A2D3A" }}>
+    <section id="projects" style={{ background: "#0F1117", padding: "80px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16, marginBottom: 40 }}>
           <div>
@@ -972,53 +967,6 @@ function Projects() {
             </div>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-function MapSection() {
-  return (
-    <section style={{ background: "#0F1117" }}>
-      {/* Pin legend */}
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "48px 24px 28px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-        <div>
-          <SectionLabel>Our Location</SectionLabel>
-          <h2 className="font-display" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 800, textTransform: "uppercase", color: "#F5F5F0", lineHeight: 1.05 }}>
-            Based in Takanini,<br />serving all of Auckland.
-          </h2>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {locations.map((loc, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#F59E0B", flexShrink: 0, boxShadow: "0 0 8px rgba(245,158,11,0.6)" }} />
-              <div>
-                <div style={{ color: "#F5F5F0", fontSize: "0.88rem", fontWeight: 600 }}>{loc.label}</div>
-                <div style={{ color: "#9CA3AF", fontSize: "0.78rem" }}>{loc.address}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Map */}
-      <div style={{ width: "100%", height: 480, position: "relative", overflow: "hidden" }}>
-        <iframe
-          title="Bloom Electrical Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3192.4!2d174.9021!3d-37.0647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s82B+Spartan+Road%2C+Takanini%2C+Auckland!5e0!3m2!1sen!2snz!4v1"
-          width="100%"
-          height="100%"
-          style={{ border: 0, display: "block", filter: "grayscale(1) invert(0.92) contrast(0.88) brightness(0.7) hue-rotate(180deg)" }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-        {/* Amber pin overlay — swap for custom map markers when integrating full Maps API */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ width: 18, height: 18, borderRadius: "50%", background: "#F59E0B", boxShadow: "0 0 0 6px rgba(245,158,11,0.25), 0 0 24px rgba(245,158,11,0.5)" }} />
-        </div>
-        {/* Subtle vignette to blend with dark theme */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse at center, transparent 55%, rgba(15,17,23,0.55) 100%)" }} />
       </div>
     </section>
   );
@@ -1054,7 +1002,7 @@ function Testimonials() {
 
 function WhoWeWorkWith() {
   return (
-    <section style={{ background: "#0F1117", padding: "60px 24px", borderTop: "1px solid #2A2D3A", borderBottom: "1px solid #2A2D3A" }}>
+    <section style={{ background: "#0F1117", padding: "60px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <SectionLabel>Our Clients</SectionLabel>
@@ -1087,7 +1035,7 @@ function BrandLogo({ name, logo }) {
 function BrandsStrip() {
   const doubled = [...brands, ...brands];
   return (
-    <section style={{ background: "#0F1117", padding: "60px 0", borderBottom: "1px solid #2A2D3A" }}>
+    <section style={{ background: "#0F1117", padding: "60px 0" }}>
       <div style={{ textAlign: "center", marginBottom: 28, padding: "0 24px" }}>
         <SectionLabel>Industry Partners</SectionLabel>
         <p style={{ color: "#9CA3AF", fontSize: "0.88rem", marginTop: 4 }}>Our installations feature top-tier brands.</p>
@@ -1146,12 +1094,37 @@ function CTABanner() {
 
 function Footer() {
   return (
-    <footer style={{ background: "#0F1117", borderTop: "1px solid #2A2D3A", padding: "64px 24px 0" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+    <footer style={{ background: "#0F1117" }}>
+      {/* Map — full width, no text, top fade into dark bg */}
+      <div style={{ position: "relative", width: "100%", height: 380, overflow: "hidden" }}>
+        <iframe
+          title="Bloom Electrical Location"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3192.4!2d174.9021!3d-37.0647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s82B+Spartan+Road%2C+Takanini%2C+Auckland!5e0!3m2!1sen!2snz!4v1"
+          width="100%"
+          height="100%"
+          style={{ border: 0, display: "block", filter: "grayscale(1) invert(0.92) contrast(0.88) brightness(0.7) hue-rotate(180deg)" }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+        {/* Top fade into footer background */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: 120,
+          background: "linear-gradient(to bottom, #0F1117 0%, transparent 100%)",
+          pointerEvents: "none",
+        }} />
+        {/* Amber location pin */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#F59E0B", boxShadow: "0 0 0 5px rgba(245,158,11,0.2), 0 0 20px rgba(245,158,11,0.5)" }} />
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
           gap: 40,
+          paddingTop: 56,
           paddingBottom: 48,
         }}>
           {/* Col 1 */}
@@ -1266,7 +1239,6 @@ export default function BloomElectrical() {
       <Services />
       <HowItWorks />
       <Projects />
-      <MapSection />
       <Testimonials />
       <WhoWeWorkWith />
       <BrandsStrip />
