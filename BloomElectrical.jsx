@@ -345,8 +345,8 @@ document.head.appendChild(style);
 // ─── Hero background mode ────────────────────────────────────────────────────
 // 'particles' → animated particle field built from the image below
 // 'image'     → plain background image, no canvas overhead
-const HERO_BG_MODE = 'particles';
-const HERO_BG_IMAGE = `${import.meta.env.BASE_URL}Particle-building-5.png`;
+const HERO_BG_MODE = 'image';
+const HERO_BG_IMAGE = `${import.meta.env.BASE_URL}Particle-building-7.png`;
 // ─────────────────────────────────────────────────────────────────────────────
 
 const navLinks = ["Home", "About", "Services", "Projects", "Testimonials", "Contact"];
