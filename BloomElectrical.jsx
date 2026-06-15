@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { initParticleBuilding } from "./ParticleBuilding.js";
 import {
   Zap, Wrench, Phone, Mail, MapPin, Clock, Shield, Star,
@@ -181,6 +181,29 @@ style.textContent = `
     flex-shrink: 0;
   }
 
+  /* process step card */
+  .process-card {
+    background: #111111;
+    border: 1px solid #222222;
+    border-left: 3px solid #F59E0B;
+    border-radius: 3px;
+    padding: 36px 30px;
+    height: 100%;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  .process-card:hover {
+    border-left-color: #01f9c6;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(1,249,198,0.2);
+  }
+  .process-card .step-circle {
+    background: #F59E0B;
+    transition: background-color 0.25s, color 0.25s;
+  }
+  .process-card:hover .step-circle {
+    background: #01f9c6;
+  }
+
   /* stat item */
   .stat-value {
     font-family: 'Barlow Condensed', sans-serif;
@@ -188,6 +211,21 @@ style.textContent = `
     font-weight: 800;
     color: #F59E0B;
     line-height: 1;
+  }
+
+  /* stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 80%;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+      width: 90%;
+    }
   }
 
   /* diagonal hero pattern */
@@ -363,10 +401,9 @@ const buildingServices = [
 ];
 
 const stats = [
-  { Icon: Clock, value: "24/7", label: "Emergency Response Available" },
-  { Icon: Layers, value: "8+", label: "Services — One Team, Every Trade" },
-  { Icon: Shield, value: "100%", label: "Licensed & Insured" },
-  { Icon: Phone, value: "1 Call", label: "To Get Everything Sorted" },
+  { Icon: Home, value: "200+", label: "Homes Serviced Every Month" },
+  { Icon: Users, value: "50+", label: "Happy Clients" },
+  { Icon: Shield, value: "5", label: "Years of Dedicated Service" },
 ];
 
 const steps = [
@@ -395,7 +432,7 @@ const testimonials = [
   {
     name: "Tajouj",
     role: "Founder, Brave the Crave Limited",
-    text: "We've used Bloom Electrical and Building Services for all our electrical and heat pump work over three years. True professionals — projects delivered on time and to budget. Highly recommended.",
+    text: "We have used Bloom Electrical for all our electrical and heat pump installation over the last 3 years. The team are true professionals. Projects were well managed and delivered on time and to budget. Highly recommended",
   },
 ];
 
@@ -593,8 +630,8 @@ function Hero() {
           position: "absolute", inset: 0, zIndex: 1,
           backgroundImage: `url(${HERO_BG_IMAGE})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.5,
+          backgroundPosition: "center 65%",
+          opacity: 0.85,
         }} />
       )}
 
@@ -630,7 +667,7 @@ function Hero() {
             maxWidth: 600,
             marginBottom: 40,
           }}>
-            Tired of juggling tradespeople? Bloom Electrical and Building Services is your one-stop shop for electrical, solar, CCTV, renovations, plumbing, and more — all under one trusted team.
+            Tired of juggling tradespeople? Bloom Electrical and Hardware Services is your one-stop shop for electrical, solar, CCTV, renovations, plumbing, and more — all under one trusted team.
           </p>
 
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
@@ -692,7 +729,7 @@ function ServicePanel({ side, Icon, title, desc, services, hovered, setHovered }
       {/* Dark gradient */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "linear-gradient(to top, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0.05) 100%)",
+        background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.05) 100%)",
       }} />
 
       {/* Large icon — faint background decoration */}
@@ -735,7 +772,7 @@ function ServicePanel({ side, Icon, title, desc, services, hovered, setHovered }
             transition: "font-size 0.65s cubic-bezier(0.4,0,0.2,1)",
             letterSpacing: "-0.02em",
             whiteSpace: "nowrap",
-            color: "#111111",
+            color: "#F59E0B",
           }}>
             {title}
           </div>
@@ -747,7 +784,7 @@ function ServicePanel({ side, Icon, title, desc, services, hovered, setHovered }
             transition: "max-height 0.65s cubic-bezier(0.4,0,0.2,1), opacity 0.45s ease",
           }}>
             <div style={{ height: 1, background: "#E2E2E8", margin: "20px 0 14px" }} />
-            <p style={{ color: "#111111", lineHeight: 1.75, fontSize: "0.9rem", maxWidth: 520 }}>
+            <p style={{ color: "#F59E0B", lineHeight: 1.75, fontSize: "0.9rem", maxWidth: 520 }}>
               {desc}
             </p>
           </div>
@@ -824,12 +861,9 @@ function Services() {
 
   return (
     <section id="services" style={{ background: "#FFFFFF" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 52px", textAlign: "center" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 52px", textAlign: "left" }}>
         <SectionLabel>Our Services</SectionLabel>
         <SectionHeading>Two Specialisms. One Company.</SectionHeading>
-        <p style={{ color: "#111111", maxWidth: 520, margin: "0 auto" }}>
-          From switchboards to bathroom renos — we do it all, and we do it right.
-        </p>
       </div>
 
       <div style={{
@@ -849,8 +883,8 @@ function Services() {
         <div style={{ width: 1, background: "#E2E2E8", flexShrink: 0, zIndex: 5 }} />
         <ServicePanel
           side="build" Icon={Wrench}
-          title="Building"
-          desc="End-to-end building, renovation, and maintenance — from switchboards to renovations, we handle it all under one trusted team."
+          title="Hardware"
+          desc="End-to-end hardware, renovation, and maintenance — from switchboards to renovations, we handle it all under one trusted team."
           services={buildingServices}
           hovered={hovered} setHovered={setHovered}
         />
@@ -878,24 +912,19 @@ function HowItWorks() {
           }}>
             {steps.map((step, i) => (
               <div key={i} style={{ position: "relative" }}>
-                <div className="card-hover" style={{
-                  background: "#F2F2F0",
-                  borderRadius: 3,
-                  padding: "36px 30px",
-                  height: "100%",
-                }}>
+                <div className="process-card">
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 18, marginBottom: 20 }}>
                     <div className="step-circle">{step.n}</div>
                     <div>
-                      <div style={{ color: "#111111", fontSize: "0.72rem", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif", marginBottom: 4 }}>
+                      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.72rem", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif", marginBottom: 4 }}>
                         Step {step.n}
                       </div>
-                      <h3 className="font-display" style={{ fontSize: "1.4rem", fontWeight: 800, textTransform: "uppercase", color: "#111111" }}>
+                      <h3 className="font-display" style={{ fontSize: "1.4rem", fontWeight: 800, textTransform: "uppercase", color: "#FFFFFF" }}>
                         {step.title}
                       </h3>
                     </div>
                   </div>
-                  <p style={{ color: "#111111", lineHeight: 1.7, fontSize: "0.93rem" }}>{step.desc}</p>
+                  <p style={{ color: "rgba(255,255,255,0.8)", lineHeight: 1.7, fontSize: "0.93rem" }}>{step.desc}</p>
                 </div>
                 {i < steps.length - 1 && (
                   <div style={{
@@ -914,13 +943,7 @@ function HowItWorks() {
 
       {/* Stat cards */}
       <div style={{ padding: "24px 0" }}>
-        <div style={{
-          width: "80%",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: `repeat(${stats.length}, 1fr)`,
-          gap: 12,
-        }}>
+        <div className="stats-grid">
           {stats.map(({ Icon, value, label }, i) => (
             <div key={i} style={{
               position: "relative",
@@ -992,7 +1015,7 @@ function Projects() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
           {projects.map((p, i) => (
-            <div key={i} className="card-hover" style={{ background: "#EBEBEA", borderRadius: 3, overflow: "hidden" }}>
+            <div key={i} className="process-card" style={{ padding: 0, overflow: "hidden" }}>
               <img
                 src={p.img}
                 alt={p.title}
@@ -1000,10 +1023,10 @@ function Projects() {
               />
               <div style={{ padding: "24px 24px 28px" }}>
                 <span className="cat-tag" style={{ marginBottom: 12, display: "inline-block" }}>{p.tag}</span>
-                <h4 className="font-display" style={{ fontSize: "1.35rem", fontWeight: 800, textTransform: "uppercase", color: "#111111", marginBottom: 4 }}>
+                <h4 className="font-display" style={{ fontSize: "1.35rem", fontWeight: 800, textTransform: "uppercase", color: "#FFFFFF", marginBottom: 4 }}>
                   {p.title}
                 </h4>
-                <p style={{ color: "#111111", fontSize: "0.85rem" }}>{p.sub}</p>
+                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.85rem" }}>{p.sub}</p>
               </div>
             </div>
           ))}
@@ -1017,21 +1040,21 @@ function Testimonials() {
   return (
     <section id="testimonials" style={{ background: "#FFFFFF", padding: "80px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
+        <div style={{ textAlign: "left", marginBottom: 48 }}>
           <SectionLabel>Client Feedback</SectionLabel>
           <SectionHeading>Trusted by homeowners, landlords, and businesses.</SectionHeading>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
           {testimonials.map((t, i) => (
-            <div key={i} className="card-hover" style={{ background: "#F2F2F0", borderRadius: 3, padding: "32px 28px" }}>
+            <div key={i} className="process-card" style={{ padding: "32px 28px" }}>
               <Stars />
-              <p style={{ color: "#111111", lineHeight: 1.7, fontSize: "0.93rem", marginBottom: 24, fontStyle: "italic" }}>
+              <p style={{ color: "rgba(255,255,255,0.85)", lineHeight: 1.7, fontSize: "0.93rem", marginBottom: 24, fontStyle: "italic" }}>
                 "{t.text}"
               </p>
-              <div style={{ borderTop: "1px solid #E2E2E8", paddingTop: 16 }}>
-                <div style={{ fontWeight: 600, color: "#111111", fontSize: "0.93rem" }}>{t.name}</div>
-                <div style={{ color: "#111111", fontSize: "0.8rem", marginTop: 2 }}>{t.role}</div>
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 16 }}>
+                <div style={{ fontWeight: 600, color: "#FFFFFF", fontSize: "0.93rem" }}>{t.name}</div>
+                <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", marginTop: 2 }}>{t.role}</div>
               </div>
             </div>
           ))}
@@ -1045,10 +1068,10 @@ function WhoWeWorkWith() {
   return (
     <section style={{ background: "#FFFFFF", padding: "60px 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 32 }}>
+        <div style={{ textAlign: "left", marginBottom: 32 }}>
           <SectionLabel>Our Clients</SectionLabel>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "flex-start" }}>
           {clients.map((c, i) => (
             <div key={i} className="client-pill">
               <span style={{ color: "#01f9c6" }}>{c.icon}</span>
@@ -1077,7 +1100,7 @@ function BrandsStrip() {
   const doubled = [...brands, ...brands];
   return (
     <section style={{ background: "#FFFFFF", padding: "60px 0" }}>
-      <div style={{ textAlign: "center", marginBottom: 28, padding: "0 24px" }}>
+      <div style={{ textAlign: "left", marginBottom: 28, padding: "0 24px", maxWidth: 1280, margin: "0 auto" }}>
         <SectionLabel>Industry Partners</SectionLabel>
         <p style={{ color: "#111111", fontSize: "0.88rem", marginTop: 4 }}>Our installations feature top-tier brands.</p>
       </div>
@@ -1213,7 +1236,7 @@ function Footer() {
               </span>
             </div>
             <p style={{ color: "#111111", fontSize: "0.85rem", lineHeight: 1.7, maxWidth: 240 }}>
-              Your one-stop shop for electrical, building and property services across Auckland, NZ.
+              Your one-stop shop for electrical, hardware and property services across Auckland, NZ.
             </p>
             <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
               {[Facebook, Instagram].map((Icon, i) => (
@@ -1244,7 +1267,7 @@ function Footer() {
           {/* Col 3 */}
           <div>
             <h5 className="font-display" style={{ fontSize: "1rem", fontWeight: 700, textTransform: "uppercase", color: "#111111", marginBottom: 14, letterSpacing: "0.05em" }}>
-              Building & Property
+              Hardware & Property
             </h5>
             {footerBuild.map(s => <a key={s} href="#services" className="footer-link">{s}</a>)}
             <h5 className="font-display" style={{ fontSize: "1rem", fontWeight: 700, textTransform: "uppercase", color: "#111111", margin: "18px 0 10px", letterSpacing: "0.05em" }}>
@@ -1287,7 +1310,7 @@ function Footer() {
           flexWrap: "wrap", gap: 8,
         }}>
           <p style={{ color: "#111111", fontSize: "0.78rem" }}>
-            © 2025 Bloom Electrical and Building Services Ltd. Licensed Electrical Inspectors — Auckland, NZ.
+            © 2025 Bloom Electrical and Hardware Services Ltd. Licensed Electrical Inspectors — Auckland, NZ.
           </p>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Shield size={12} color="#01f9c6" />
@@ -1295,29 +1318,138 @@ function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Map — full width, below footer links, top fade blends with footer */}
-      <div style={{ position: "relative", width: "100%", height: 340, overflow: "hidden" }}>
-        <iframe
-          title="Bloom Electrical Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3192.4!2d174.9021!3d-37.0647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s82B+Spartan+Road%2C+Takanini%2C+Auckland!5e0!3m2!1sen!2snz!4v1"
-          width="100%"
-          height="100%"
-          style={{ border: 0, display: "block", filter: "grayscale(1) invert(0.92) contrast(0.88) brightness(0.7) hue-rotate(180deg)" }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: 100,
-          background: "linear-gradient(to bottom, #FFFFFF 0%, transparent 100%)",
-          pointerEvents: "none",
-        }} />
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#F59E0B", boxShadow: "0 0 0 5px rgba(245,158,11,0.2), 0 0 20px rgba(245,158,11,0.5)" }} />
-        </div>
-      </div>
     </footer>
+  );
+}
+
+function Map() {
+  const mapRef = useRef(null);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const overlayTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    if (!document.getElementById("leaflet-css")) {
+      const link = document.createElement("link");
+      link.id = "leaflet-css";
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      document.head.appendChild(link);
+    }
+
+    let script = document.getElementById("leaflet-js");
+    if (!script) {
+      script = document.createElement("script");
+      script.id = "leaflet-js";
+      script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+
+    const initMap = () => {
+      if (!window.L) return;
+      if (mapRef.current) {
+        mapRef.current.remove();
+      }
+
+      const center = [-36.8485, 174.7633];
+      const map = window.L.map("map-container", {
+        center: center,
+        zoom: 10.5,
+        zoomSnap: 0.5,
+        zoomControl: false,
+        attributionControl: false,
+        scrollWheelZoom: false
+      });
+      mapRef.current = map;
+
+      window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19
+      }).addTo(map);
+
+      window.L.circle(center, {
+        radius: 15000,
+        color: '#bd2c2c',
+        weight: 1.5,
+        fillColor: '#bd2c2c',
+        fillOpacity: 0.4
+      }).addTo(map);
+    };
+
+    if (window.L) {
+      initMap();
+    } else {
+      script.addEventListener("load", initMap);
+    }
+
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && mapRef.current) {
+        mapRef.current.scrollWheelZoom.enable();
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      if (!(e.metaKey || e.ctrlKey) && mapRef.current) {
+        mapRef.current.scrollWheelZoom.disable();
+      }
+    };
+
+    const mapContainer = document.getElementById("map-container");
+    const handleWheel = (e) => {
+      if (!(e.metaKey || e.ctrlKey)) {
+        setShowOverlay(true);
+        if (overlayTimeoutRef.current) clearTimeout(overlayTimeoutRef.current);
+        overlayTimeoutRef.current = setTimeout(() => {
+          setShowOverlay(false);
+        }, 1500);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    mapContainer?.addEventListener("wheel", handleWheel, { passive: true });
+
+    return () => {
+      if (script) {
+        script.removeEventListener("load", initMap);
+      }
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      mapContainer?.removeEventListener("wheel", handleWheel);
+      if (overlayTimeoutRef.current) {
+        clearTimeout(overlayTimeoutRef.current);
+      }
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, []);
+
+  const isMac = typeof window !== "undefined" && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const overlayMessage = isMac ? "Use ⌘ + scroll to zoom the map" : "Use Ctrl + scroll to zoom the map";
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: 340, background: "#FFFFFF" }}>
+      <div id="map-container" style={{ width: "100%", height: "100%" }} />
+      {showOverlay && (
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0, 0, 0, 0.6)",
+          color: "#FFFFFF",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "1.1rem",
+          fontWeight: 500,
+          fontFamily: "system-ui, sans-serif",
+          zIndex: 9999,
+          pointerEvents: "none",
+        }}>
+          {overlayMessage}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -1341,6 +1473,7 @@ export default function BloomElectrical() {
       <WhoWeWorkWith />
       <BrandsStrip />
       <Projects />
+      <Map />
       <CTABanner />
       <Footer />
     </div>
