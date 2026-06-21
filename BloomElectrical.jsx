@@ -222,11 +222,6 @@ style.textContent = `
     max-width: 1100px;
     margin: 0 auto;
   }
-  @media (max-width: 520px) {
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
-  }
 
   .stat-card-base {
     position: relative;
@@ -269,26 +264,13 @@ style.textContent = `
     justify-content: space-between;
     padding: 32px;
   }
-  @media (max-width: 520px) {
-    .stat-card-3 {
-      grid-column: span 1;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-    }
-  }
 
   .stat-card-3-line {
     flex-grow: 1;
     height: 1px;
     background: rgba(255, 255, 255, 0.2);
     margin: 0 24px;
-    min-width: 20px;
-  }
-  @media (max-width: 520px) {
-    .stat-card-3-line {
-      display: none;
-    }
+    min-width: 12px;
   }
 
   .stat-card-3-slash {
@@ -297,9 +279,22 @@ style.textContent = `
     color: rgba(255, 255, 255, 0.4);
     margin-right: 24px;
   }
-  @media (max-width: 520px) {
+
+  @media (max-width: 600px) {
+    .stat-card-1, .stat-card-2 {
+      min-height: 155px;
+      padding: 20px 16px;
+    }
+    .stat-card-3 {
+      min-height: 90px;
+      padding: 16px 20px;
+    }
+    .stat-card-3-line {
+      margin: 0 12px;
+    }
     .stat-card-3-slash {
-      display: none;
+      font-size: 1.6rem;
+      margin-right: 12px;
     }
   }
 
@@ -1241,6 +1236,31 @@ function HowItWorks() {
 
       {/* Stat cards */}
       <div style={{ padding: "24px 0" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto 24px", padding: "0 16px", textAlign: "left" }} className="reveal">
+          <span style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontSize: "0.78rem",
+            fontWeight: 700,
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "#F59E0B",
+            display: "block",
+            marginBottom: 6,
+          }}>
+            Performance Metrics
+          </span>
+          <h3 className="font-display" style={{
+            fontSize: "clamp(1.15rem, 2.5vw, 1.6rem)",
+            fontWeight: 800,
+            color: "#111111",
+            textTransform: "uppercase",
+            letterSpacing: "0.02em",
+            lineHeight: 1.2,
+          }}>
+            Proven Track Record. Real Results.
+          </h3>
+        </div>
+
         <div className="stats-grid">
           {/* Card 1 */}
           <div className="stat-card-base stat-card-1 reveal delay-1">
