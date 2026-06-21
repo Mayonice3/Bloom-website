@@ -295,6 +295,7 @@ style.textContent = `
     position: absolute; inset: 0; z-index: 1;
     background-size: cover;
     background-position: center 65%;
+    background-repeat: no-repeat;
     opacity: 0.85;
     pointer-events: none;
   }
