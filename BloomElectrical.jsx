@@ -780,6 +780,17 @@ function Hero() {
   );
 }
 
+function TapIcon({ size = 16, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="2" width="14" height="20" rx="2" />
+      <path d="M12 18h.01" />
+      <circle cx="12" cy="10" r="2.5" fill="#F59E0B" stroke="#F59E0B" strokeWidth="0.5" />
+      <circle cx="12" cy="10" r="5" stroke="#F59E0B" strokeWidth="1" strokeDasharray="2 2" opacity="0.8" />
+    </svg>
+  );
+}
+
 function ServicePanel({ side, Icon, title, desc, services, hovered, setHovered }) {
   const active = hovered === side;
   const inactive = hovered !== null && !active;
@@ -796,6 +807,34 @@ function ServicePanel({ side, Icon, title, desc, services, hovered, setHovered }
         filter: inactive ? "saturate(0.12) brightness(0.5)" : "none",
       }}
     >
+      {/* Tap/Hover Hint */}
+      <div style={{
+        position: "absolute",
+        top: "24px",
+        right: "24px",
+        opacity: active ? 0 : 0.75,
+        transform: active ? "scale(0.85) translateY(-8px)" : "scale(1) translateY(0)",
+        transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+        color: "#FFFFFF",
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        background: "rgba(15, 17, 23, 0.55)",
+        backdropFilter: "blur(6px)",
+        padding: "6px 14px",
+        borderRadius: "20px",
+        border: "1px solid rgba(255, 255, 255, 0.15)",
+        pointerEvents: "none",
+        fontSize: "0.72rem",
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: "0.06em",
+        fontFamily: "'Poppins', sans-serif",
+        zIndex: 10,
+      }}>
+        <TapIcon size={14} color="#F59E0B" />
+        <span>Tap to View</span>
+      </div>
       {/* Background image — swap url() with your own photo */}
       <div style={{
         position: "absolute", inset: 0,
