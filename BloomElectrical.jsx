@@ -291,15 +291,21 @@ style.textContent = `
     }
   }
 
-  .hero-image-mobile {
-    display: none;
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 1;
+    background-size: cover;
+    background-position: center 65%;
+    opacity: 0.85;
+    pointer-events: none;
   }
   @media (max-width: 768px) {
-    .hero-bg-desktop {
-      display: none !important;
+    .hero-bg {
+      background-size: 200% !important;
+      background-position: 78% 90% !important;
+      opacity: 0.35 !important;
     }
-    .hero-image-mobile {
-      display: block !important;
+    #home {
+      min-height: 70vh !important;
     }
   }
 
@@ -858,12 +864,8 @@ function Hero() {
 
       {/* static background image mode */}
       {HERO_BG_MODE === 'image' && (
-        <div className="hero-bg-desktop" style={{
-          position: "absolute", inset: 0, zIndex: 1,
+        <div className="hero-bg" style={{
           backgroundImage: `url(${HERO_BG_IMAGE})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center 65%",
-          opacity: 0.85,
         }} />
       )}
 
@@ -911,23 +913,6 @@ function Hero() {
             <a href="tel:0800225666" className="btn-ghost">
               <Phone size={16} /> Call 0800 225 666
             </a>
-          </div>
-
-          {/* Mobile Image (rendered below copy on mobile, hidden on desktop) */}
-          <div className="hero-image-mobile reveal delay-4" style={{ marginTop: "24px" }}>
-            <img 
-              src={HERO_BG_IMAGE} 
-              alt="Bloom Electrical & Hardware" 
-              style={{
-                width: "100%",
-                height: "auto",
-                maxHeight: "350px",
-                objectFit: "cover",
-                borderRadius: "4px",
-                border: "1px solid rgba(0, 0, 0, 0.1)",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-              }} 
-            />
           </div>
         </div>
       </div>
