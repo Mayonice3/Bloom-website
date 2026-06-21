@@ -10,7 +10,7 @@ import {
 const fontLink = document.createElement("link");
 fontLink.rel = "stylesheet";
 fontLink.href =
-  "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap";
+  "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap";
 document.head.appendChild(fontLink);
 
 /* ─── CSS injection ─────────────────────────────────────────────── */
@@ -20,7 +20,7 @@ style.textContent = `
   html { scroll-behavior: smooth; }
   body { background: #FFFFFF; color: #111111; font-family: 'DM Sans', sans-serif; }
 
-  .font-display { font-family: 'Barlow Condensed', sans-serif; }
+  .font-display { font-family: 'Poppins', sans-serif; }
   .amber { color: #F59E0B; }
   .amber-bg { background: #F59E0B; }
   .cyan { color: #01f9c6; }
@@ -50,7 +50,7 @@ style.textContent = `
   .btn-amber {
     background: #F59E0B;
     color: #0F1117;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1rem;
     letter-spacing: 0.05em;
@@ -74,7 +74,7 @@ style.textContent = `
   .btn-ghost {
     background: transparent;
     color: #111111;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1rem;
     letter-spacing: 0.05em;
@@ -96,7 +96,7 @@ style.textContent = `
   .btn-dark-outline {
     background: transparent;
     color: #0F1117;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1rem;
     letter-spacing: 0.05em;
@@ -125,7 +125,7 @@ style.textContent = `
 
   /* section label */
   .section-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.2em;
@@ -156,7 +156,7 @@ style.textContent = `
 
   /* category tag on project card */
   .cat-tag {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.15em;
@@ -174,7 +174,7 @@ style.textContent = `
     border-radius: 50%;
     background: #01f9c6;
     color: #111111;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     font-weight: 800;
     display: flex; align-items: center; justify-content: center;
@@ -206,7 +206,7 @@ style.textContent = `
 
   /* stat item */
   .stat-value {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 2.4rem;
     font-weight: 800;
     color: #F59E0B;
@@ -245,36 +245,118 @@ style.textContent = `
     box-shadow: 0 4px 24px rgba(0,0,0,0.5);
   }
 
+  @keyframes slideDownFade {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
   /* mobile menu */
   .mobile-menu {
     position: fixed; inset: 0; top: 64px;
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
     z-index: 90;
     border-top: 1px solid #E2E2E8;
     padding: 24px;
     display: flex; flex-direction: column; gap: 4px;
+    animation: slideDownFade 0.25s ease-out forwards;
   }
   .mobile-link {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #111111;
-    padding: 14px 0;
+    padding: 14px 20px;
     border-bottom: 1px solid #E2E2E8;
     text-decoration: none;
     transition: color 0.2s;
   }
   .mobile-link:hover { color: #F59E0B; }
 
-  /* brand chip */
+  /* services split responsive */
+  .services-split {
+    display: flex;
+    height: 72vh;
+    min-height: 500px;
+    max-height: 700px;
+    overflow: hidden;
+  }
+  .service-panel-wrap {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0%;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    min-width: 0;
+  }
+  @media (max-width: 768px) {
+    .services-split {
+      flex-direction: column !important;
+      height: auto !important;
+      max-height: none !important;
+      min-height: auto !important;
+    }
+    .service-panel-wrap {
+      flex-basis: auto !important;
+      flex-grow: 1 !important;
+      height: 320px !important;
+      width: 100% !important;
+    }
+  }
+
+  /* step process arrow responsive */
+  .step-arrow {
+    position: absolute;
+    right: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+  }
+  @media (max-width: 768px) {
+    .step-arrow {
+      right: auto !important;
+      left: 50% !important;
+      top: auto !important;
+      bottom: -22px !important;
+      transform: translateX(-50%) rotate(90deg) !important;
+    }
+  }
+
+  /* contact form responsive */
+  .contact-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 600px) {
+    .contact-form {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* service divider responsive */
+  .service-divider {
+    width: 1px;
+    background: #E2E2E8;
+    flex-shrink: 0;
+    z-index: 5;
+  }
+  @media (max-width: 768px) {
+    .service-divider {
+      display: none !important;
+    }
+  }
+
   .brand-chip {
     display: inline-block;
     padding: 8px 18px;
     border: 1px solid #E2E2E8;
     border-radius: 2px;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -303,13 +385,24 @@ style.textContent = `
 
   /* scrolling brands */
   .brands-track {
-    display: flex; gap: 12px;
+    display: flex; gap: 64px;
+    align-items: center;
     animation: scrollBrands 55s linear infinite;
+    width: max-content;
+  }
+  .brands-track-reverse {
+    display: flex; gap: 64px;
+    align-items: center;
+    animation: scrollBrandsReverse 55s linear infinite;
     width: max-content;
   }
   @keyframes scrollBrands {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
+  }
+  @keyframes scrollBrandsReverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
   }
   .brands-mask {
     overflow: hidden;
@@ -323,7 +416,7 @@ style.textContent = `
     border: 1px dashed #E2E2E8;
     display: flex; align-items: center; justify-content: center;
     color: rgba(245,158,11,0.35);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -345,35 +438,23 @@ style.textContent = `
   /* brand logo chips */
   .brand-logo-wrap {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 14px 32px; height: 64px;
+    padding: 0; height: 64px;
     background: transparent;
-    border: 1px solid #E2E2E8;
-    border-radius: 2px;
+    border: none;
     cursor: default;
-    transition: all 0.35s ease;
     white-space: nowrap;
   }
-  .brand-logo-wrap:hover {
-    border-color: #F59E0B;
-    background: rgba(245,158,11,0.03);
-  }
   .brand-logo {
-    height: 32px; max-width: 120px;
+    height: 36px; max-width: 130px;
     object-fit: contain;
-    filter: grayscale(1) opacity(0.75);
-    transition: all 0.35s ease;
-  }
-  .brand-logo-wrap:hover .brand-logo {
-    filter: none;
+    filter: brightness(0);
   }
   .brand-text-fallback {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem; font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem; font-weight: 800;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: #111111;
-    transition: color 0.35s ease;
+    color: #000000;
   }
-  .brand-logo-wrap:hover .brand-text-fallback { color: #F59E0B; }
 
   @media (max-width: 768px) {
     .cut-bottom { clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%); padding-bottom: 60px; }
@@ -530,11 +611,12 @@ function Navbar({ scrolled }) {
           display: "flex", alignItems: "center", justifyContent: "space-between",
         }}>
           {/* Logo */}
-          <a href="#home" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-            <Zap size={22} color="#F59E0B" fill="#F59E0B" />
-            <span className="font-display" style={{ fontSize: "1.35rem", fontWeight: 800, color: "#111111", letterSpacing: "0.03em" }}>
-              BLOOM <span style={{ color: "#F59E0B" }}>ELECTRICAL</span>
-            </span>
+          <a href="#home" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+            <img 
+              src={`${import.meta.env.BASE_URL}bloom_logo_orange.png`} 
+              alt="Bloom Electrical" 
+              style={{ height: "40px", objectFit: "contain" }} 
+            />
           </a>
 
           {/* Desktop nav */}
@@ -547,7 +629,7 @@ function Navbar({ scrolled }) {
                   color: "#111111", textDecoration: "none",
                   fontSize: "0.85rem", fontWeight: 500,
                   letterSpacing: "0.05em", textTransform: "uppercase",
-                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontFamily: "'Poppins', sans-serif",
                   transition: "color 0.2s",
                 }}
                 onMouseEnter={e => e.target.style.color = "#F59E0B"}
@@ -707,16 +789,11 @@ function ServicePanel({ side, Icon, title, desc, services, hovered, setHovered }
     <div
       onMouseEnter={() => setHovered(side)}
       onMouseLeave={() => setHovered(null)}
+      className="service-panel-wrap"
       style={{
         flexGrow: active ? 7 : inactive ? 3 : 1,
-        flexShrink: 0,
-        flexBasis: "0%",
         transition: "flex-grow 0.65s cubic-bezier(0.4,0,0.2,1), filter 0.55s ease",
         filter: inactive ? "saturate(0.12) brightness(0.5)" : "none",
-        position: "relative",
-        overflow: "hidden",
-        cursor: "pointer",
-        minWidth: 0,
       }}
     >
       {/* Background image — swap url() with your own photo */}
@@ -843,7 +920,7 @@ function ServicePanel({ side, Icon, title, desc, services, hovered, setHovered }
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
               background: "#111111", color: "#FFFFFF",
-              fontFamily: "'Barlow Condensed', sans-serif",
+              fontFamily: "'Poppins', sans-serif",
               fontWeight: 700, fontSize: "1rem",
               letterSpacing: "0.08em", textTransform: "uppercase",
               textDecoration: "none",
@@ -867,18 +944,12 @@ function Services() {
 
   return (
     <section id="services" style={{ background: "#FFFFFF" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 52px", textAlign: "left" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "clamp(48px, 8vw, 96px) 24px clamp(24px, 4vw, 48px)", textAlign: "left" }}>
         <SectionLabel>Our Services</SectionLabel>
         <SectionHeading>Two Specialisms. One Company.</SectionHeading>
       </div>
 
-      <div style={{
-        display: "flex",
-        height: "72vh",
-        minHeight: 500,
-        maxHeight: 700,
-        overflow: "hidden",
-      }}>
+      <div className="services-split">
         <ServicePanel
           side="elec" Icon={Zap}
           title="Electrical"
@@ -886,7 +957,7 @@ function Services() {
           services={electricalServices}
           hovered={hovered} setHovered={setHovered}
         />
-        <div style={{ width: 1, background: "#E2E2E8", flexShrink: 0, zIndex: 5 }} />
+        <div className="service-divider" />
         <ServicePanel
           side="build" Icon={Wrench}
           title="Hardware"
@@ -903,7 +974,7 @@ function HowItWorks() {
   return (
     <section id="about" style={{ background: "#FFFFFF" }}>
       {/* Process steps */}
-      <div style={{ padding: "80px 24px 56px" }}>
+      <div style={{ padding: "clamp(48px, 8vw, 96px) 24px clamp(32px, 5vw, 56px)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 48 }}>
             <SectionLabel>The Process</SectionLabel>
@@ -922,7 +993,7 @@ function HowItWorks() {
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 18, marginBottom: 20 }}>
                     <div className="step-circle">{step.n}</div>
                     <div>
-                      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.72rem", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif", marginBottom: 4 }}>
+                      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.72rem", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "'Poppins', sans-serif", marginBottom: 4 }}>
                         Step {step.n}
                       </div>
                       <h3 className="font-display" style={{ fontSize: "1.4rem", fontWeight: 800, textTransform: "uppercase", color: "#FFFFFF" }}>
@@ -933,11 +1004,7 @@ function HowItWorks() {
                   <p style={{ color: "rgba(255,255,255,0.8)", lineHeight: 1.7, fontSize: "0.93rem" }}>{step.desc}</p>
                 </div>
                 {i < steps.length - 1 && (
-                  <div style={{
-                    position: "absolute", right: -13, top: "50%",
-                    transform: "translateY(-50%)",
-                    zIndex: 2, display: "flex",
-                  }}>
+                  <div className="step-arrow">
                     <ChevronRight size={22} color="#01f9c6" style={{ filter: "drop-shadow(0 0 6px #01f9c6)" }} />
                   </div>
                 )}
@@ -1007,7 +1074,7 @@ function HowItWorks() {
 
 function Projects() {
   return (
-    <section id="projects" style={{ background: "#FFFFFF", padding: "80px 24px" }}>
+    <section id="projects" style={{ background: "#FFFFFF", padding: "clamp(48px, 8vw, 96px) 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16, marginBottom: 40 }}>
           <div>
@@ -1044,7 +1111,7 @@ function Projects() {
 
 function Testimonials() {
   return (
-    <section id="testimonials" style={{ background: "#FFFFFF", padding: "80px 24px" }}>
+    <section id="testimonials" style={{ background: "#FFFFFF", padding: "clamp(48px, 8vw, 96px) 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ textAlign: "left", marginBottom: 48 }}>
           <SectionLabel>Client Feedback</SectionLabel>
@@ -1078,18 +1145,17 @@ function WhoWeWorkWith() {
     ...workedForClients
   ];
   return (
-    <section style={{ background: "#FFFFFF", padding: "60px 0" }}>
+    <section style={{ background: "#FFFFFF", padding: "clamp(36px, 6vw, 64px) 0" }}>
       <div style={{ textAlign: "left", marginBottom: 28, padding: "0 24px", maxWidth: 1280, margin: "0 auto" }}>
-        <SectionLabel>Our Clients</SectionLabel>
-        <p style={{ color: "#111111", fontSize: "0.88rem", marginTop: 4 }}>
-          Trusted by homeowners, property managers, and businesses across Auckland.
-        </p>
+        <SectionHeading>Our Clients</SectionHeading>
       </div>
-      <div className="brands-mask">
-        <div className="brands-track">
-          {quadrupled.map((c, i) => (
-            <BrandLogo key={i} name={c.name} logo={c.logo} />
-          ))}
+      <div style={{ background: "#F59E0B", padding: "20px 0" }}>
+        <div className="brands-mask">
+          <div className="brands-track">
+            {quadrupled.map((c, i) => (
+              <BrandLogo key={i} name={c.name} logo={c.logo} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1111,16 +1177,17 @@ function BrandLogo({ name, logo }) {
 function BrandsStrip() {
   const doubled = [...brands, ...brands];
   return (
-    <section style={{ background: "#FFFFFF", padding: "60px 0" }}>
+    <section style={{ background: "#FFFFFF", padding: "clamp(36px, 6vw, 64px) 0" }}>
       <div style={{ textAlign: "left", marginBottom: 28, padding: "0 24px", maxWidth: 1280, margin: "0 auto" }}>
-        <SectionLabel>Industry Partners</SectionLabel>
-        <p style={{ color: "#111111", fontSize: "0.88rem", marginTop: 4 }}>Our installations feature top-tier brands.</p>
+        <SectionHeading>Industry Partners</SectionHeading>
       </div>
-      <div className="brands-mask">
-        <div className="brands-track">
-          {doubled.map((b, i) => (
-            <BrandLogo key={i} name={b.name} logo={b.logo} />
-          ))}
+      <div style={{ background: "#F59E0B", padding: "20px 0" }}>
+        <div className="brands-mask">
+          <div className="brands-track-reverse">
+            {doubled.map((b, i) => (
+              <BrandLogo key={i} name={b.name} logo={b.logo} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1150,13 +1217,13 @@ function CTABanner() {
   const inputStyle = {
     width: "100%", padding: "13px 16px",
     background: "rgba(0,0,0,0.18)", border: "1.5px solid rgba(15,17,23,0.35)",
-    borderRadius: 3, color: "#0F1117", fontSize: "0.93rem",
+    borderRadius: 3, color: "#0F1117", fontSize: "16px",
     fontFamily: "'DM Sans', sans-serif", outline: "none",
     transition: "border-color 0.2s",
   };
 
   return (
-    <section id="contact" style={{ background: "#F59E0B", padding: "72px 24px" }}>
+    <section id="contact" style={{ background: "#F59E0B", padding: "clamp(48px, 8vw, 96px) 24px" }}>
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
         {/* Heading */}
         <div style={{ textAlign: "center", marginBottom: 48 }}>
@@ -1173,7 +1240,7 @@ function CTABanner() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <form onSubmit={handleSubmit} className="contact-form">
           <input
             name="name" type="text" placeholder="Your Name" required
             value={form.name} onChange={handleChange}
@@ -1210,7 +1277,7 @@ function CTABanner() {
             </div>
             <button type="submit" disabled={status === "sending"} style={{
               background: "#111111", color: "#FFFFFF",
-              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+              fontFamily: "'Poppins', sans-serif", fontWeight: 700,
               fontSize: "1rem", letterSpacing: "0.05em", textTransform: "uppercase",
               padding: "14px 32px", border: "none", borderRadius: 3, cursor: "pointer",
               display: "inline-flex", alignItems: "center", gap: 8, transition: "background 0.2s",
@@ -1230,103 +1297,140 @@ function CTABanner() {
 
 function Footer() {
   return (
-    <footer style={{ background: "#FFFFFF" }}>
+    <footer style={{ background: "#111111", position: "relative" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: 40,
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: 48,
           paddingTop: 56,
           paddingBottom: 48,
         }}>
           {/* Col 1 */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-              <Zap size={20} color="#F59E0B" fill="#F59E0B" />
-              <span className="font-display" style={{ fontSize: "1.2rem", fontWeight: 800, color: "#111111" }}>
-                BLOOM <span style={{ color: "#F59E0B" }}>ELECTRICAL</span>
-              </span>
+            <div style={{ display: "flex", alignItems: "center", marginBottom: 16 }}>
+              <img 
+                src={`${import.meta.env.BASE_URL}Bloom_Electrical_logo_white.png`} 
+                alt="Bloom Electrical" 
+                style={{ height: "36px", objectFit: "contain" }} 
+              />
             </div>
-            <p style={{ color: "#111111", fontSize: "0.85rem", lineHeight: 1.7, maxWidth: 240 }}>
-              Your one-stop shop for electrical, hardware and property services across Auckland, NZ.
+            <p style={{ color: "#CCCCCC", fontSize: "0.88rem", lineHeight: 1.7, maxWidth: 360 }}>
+              Bloom Electrical, based in Takanini, Auckland, offers expert electrical services including solar installations, EV charging, air conditioning, and ventilation. Our team of registered electricians serves clients in Takanini, Auckland Central, Manukau, Papakura, and surrounding suburbs.
             </p>
-            <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
-              {[Facebook, Instagram].map((Icon, i) => (
-                <a key={i} href="#" style={{
-                  width: 36, height: 36, borderRadius: 3,
-                  background: "#F2F2F0", border: "1px solid #E2E2E8",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#111111", transition: "color 0.2s, border-color 0.2s",
-                  textDecoration: "none",
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.color = "#F59E0B"; e.currentTarget.style.borderColor = "#F59E0B"; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = "#9CA3AF"; e.currentTarget.style.borderColor = "#E2E2E8"; }}
-                >
-                  <Icon size={16} />
-                </a>
-              ))}
+          </div>
+
+          {/* Col 2: Contact */}
+          <div>
+            <h5 className="font-display" style={{
+              fontSize: "1.1rem",
+              fontWeight: 500,
+              textTransform: "uppercase",
+              color: "#FFFFFF",
+              marginBottom: 20,
+              letterSpacing: "0.08em",
+            }}>
+              Contact
+            </h5>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                <MapPin size={16} color="#FFFFFF" style={{ flexShrink: 0 }} />
+                <span style={{ color: "#E2E2E8", fontSize: "0.93rem" }}>82B Spartan Road, Takanini</span>
+              </div>
+              <a href="tel:0800225666" style={{
+                display: "flex",
+                gap: 12,
+                alignItems: "center",
+                color: "#E2E2E8",
+                textDecoration: "none",
+                fontSize: "0.93rem",
+                transition: "color 0.2s",
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = "#F59E0B"}
+                onMouseLeave={e => e.currentTarget.style.color = "#E2E2E8"}
+              >
+                <Phone size={16} color="#FFFFFF" style={{ flexShrink: 0 }} />
+                <span>0800 2 BLOOM (0800 22 5 666)</span>
+              </a>
+              <a href="mailto:info@bloomelectrical.co.nz" style={{
+                display: "flex",
+                gap: 12,
+                alignItems: "center",
+                color: "#E2E2E8",
+                textDecoration: "none",
+                fontSize: "0.93rem",
+                transition: "color 0.2s",
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = "#F59E0B"}
+                onMouseLeave={e => e.currentTarget.style.color = "#E2E2E8"}
+              >
+                <Mail size={16} color="#FFFFFF" style={{ flexShrink: 0 }} />
+                <span>info@bloomelectrical.co.nz</span>
+              </a>
             </div>
           </div>
 
-          {/* Col 2 */}
+          {/* Col 3: Opening Hours & Follow Us */}
           <div>
-            <h5 className="font-display" style={{ fontSize: "1rem", fontWeight: 700, textTransform: "uppercase", color: "#111111", marginBottom: 14, letterSpacing: "0.05em" }}>
-              Electrical & Technology
+            <h5 className="font-display" style={{
+              fontSize: "1.1rem",
+              fontWeight: 500,
+              textTransform: "uppercase",
+              color: "#FFFFFF",
+              marginBottom: 16,
+              letterSpacing: "0.08em",
+            }}>
+              Opening Hours
             </h5>
-            {footerElec.map(s => <a key={s} href="#services" className="footer-link">{s}</a>)}
-          </div>
+            <div style={{ color: "#E2E2E8", fontSize: "0.93rem", display: "flex", flexDirection: "column", gap: 4, marginBottom: 24 }}>
+              <span>Mondays - Fridays:</span>
+              <span style={{ fontWeight: 500 }}>8:00 AM - 5:00 PM</span>
+            </div>
 
-          {/* Col 3 */}
-          <div>
-            <h5 className="font-display" style={{ fontSize: "1rem", fontWeight: 700, textTransform: "uppercase", color: "#111111", marginBottom: 14, letterSpacing: "0.05em" }}>
-              Hardware & Property
+            <h5 className="font-display" style={{
+              fontSize: "1.1rem",
+              fontWeight: 500,
+              textTransform: "uppercase",
+              color: "#FFFFFF",
+              marginBottom: 16,
+              letterSpacing: "0.08em",
+            }}>
+              Follow Us
             </h5>
-            {footerBuild.map(s => <a key={s} href="#services" className="footer-link">{s}</a>)}
-            <h5 className="font-display" style={{ fontSize: "1rem", fontWeight: 700, textTransform: "uppercase", color: "#111111", margin: "18px 0 10px", letterSpacing: "0.05em" }}>
-              Quick Links
-            </h5>
-            {quickLinks.map(l => <a key={l} href={`#${l.toLowerCase().replace(" ", "")}`} className="footer-link">{l}</a>)}
-          </div>
-
-          {/* Col 4 */}
-          <div>
-            <h5 className="font-display" style={{ fontSize: "1rem", fontWeight: 700, textTransform: "uppercase", color: "#111111", marginBottom: 14, letterSpacing: "0.05em" }}>
-              Contact Us
-            </h5>
-            {[
-              { icon: <MapPin size={14} />, text: "82B Spartan Road, Takanini, Auckland, NZ" },
-              { icon: <Phone size={14} />, text: "0800 2 BLOOM (0800 225 666)", href: "tel:0800225666" },
-              { icon: <Mail size={14} />, text: "info@bloomelectrical.co.nz", href: "mailto:info@bloomelectrical.co.nz" },
-              { icon: <Clock size={14} />, text: "Mon–Fri 8am–5pm" },
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
-                <span style={{ color: "#01f9c6", marginTop: 2, flexShrink: 0 }}>{item.icon}</span>
-                {item.href ? (
-                  <a href={item.href} style={{ color: "#111111", fontSize: "0.85rem", lineHeight: 1.5, textDecoration: "none" }}
-                    onMouseEnter={e => e.target.style.color = "#F59E0B"}
-                    onMouseLeave={e => e.target.style.color = "#9CA3AF"}
-                  >{item.text}</a>
-                ) : (
-                  <span style={{ color: "#111111", fontSize: "0.85rem", lineHeight: 1.5 }}>{item.text}</span>
-                )}
-              </div>
-            ))}
+            <div style={{ display: "flex", gap: 20 }}>
+              <a href="https://www.facebook.com/people/Bloom-Electrical/61557538537767/" target="_blank" rel="noopener noreferrer" style={{
+                color: "#FFFFFF", transition: "color 0.2s", display: "flex", alignItems: "center"
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = "#F59E0B"}
+                onMouseLeave={e => e.currentTarget.style.color = "#FFFFFF"}
+              >
+                <Facebook size={20} strokeWidth={1.5} />
+              </a>
+              <a href="https://www.instagram.com/bloomelectricalnz" target="_blank" rel="noopener noreferrer" style={{
+                color: "#FFFFFF", transition: "color 0.2s", display: "flex", alignItems: "center"
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = "#F59E0B"}
+                onMouseLeave={e => e.currentTarget.style.color = "#FFFFFF"}
+              >
+                <Instagram size={20} strokeWidth={1.5} />
+              </a>
+            </div>
           </div>
         </div>
 
         {/* Bottom bar */}
         <div style={{
-          borderTop: "1px solid #E2E2E8",
+          borderTop: "1px solid rgba(255, 255, 255, 0.1)",
           padding: "20px 0",
           display: "flex", justifyContent: "space-between", alignItems: "center",
           flexWrap: "wrap", gap: 8,
         }}>
-          <p style={{ color: "#111111", fontSize: "0.78rem" }}>
-            © 2025 Bloom Electrical and Hardware Services Ltd. Licensed Electrical Inspectors — Auckland, NZ.
+          <p style={{ color: "#AAAAAA", fontSize: "0.78rem" }}>
+            © 2026 Bloom Electrical and Hardware Services Ltd. Licensed Electrical Inspectors — Auckland, NZ.
           </p>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Shield size={12} color="#01f9c6" />
-            <span style={{ color: "#111111", fontSize: "0.78rem" }}>Licensed & Insured</span>
+            <span style={{ color: "#AAAAAA", fontSize: "0.78rem" }}>Licensed & Insured</span>
           </div>
         </div>
       </div>
@@ -1374,16 +1478,16 @@ function Map() {
       });
       mapRef.current = map;
 
-      window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 19
       }).addTo(map);
 
       window.L.circle(center, {
         radius: 15000,
-        color: '#bd2c2c',
+        color: '#F59E0B',
         weight: 1.5,
-        fillColor: '#bd2c2c',
-        fillOpacity: 0.4
+        fillColor: '#F59E0B',
+        fillOpacity: 0.25
       }).addTo(map);
     };
 
@@ -1441,27 +1545,33 @@ function Map() {
   const overlayMessage = isMac ? "Use ⌘ + scroll to zoom the map" : "Use Ctrl + scroll to zoom the map";
 
   return (
-    <div style={{ position: "relative", width: "100%", height: 340, background: "#FFFFFF" }}>
-      <div id="map-container" style={{ width: "100%", height: "100%" }} />
-      {showOverlay && (
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          background: "rgba(0, 0, 0, 0.6)",
-          color: "#FFFFFF",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "1.1rem",
-          fontWeight: 500,
-          fontFamily: "system-ui, sans-serif",
-          zIndex: 9999,
-          pointerEvents: "none",
-        }}>
-          {overlayMessage}
-        </div>
-      )}
-    </div>
+    <section id="service-area" style={{ background: "#FFFFFF", paddingTop: "clamp(48px, 8vw, 96px)" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto 40px", padding: "0 24px" }}>
+        <SectionLabel>Service Area</SectionLabel>
+        <SectionHeading>Where We Operate</SectionHeading>
+      </div>
+      <div style={{ position: "relative", width: "100%", height: 380, background: "#FFFFFF" }}>
+        <div id="map-container" style={{ width: "100%", height: "100%" }} />
+        {showOverlay && (
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(0, 0, 0, 0.6)",
+            color: "#FFFFFF",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "1.1rem",
+            fontWeight: 500,
+            fontFamily: "system-ui, sans-serif",
+            zIndex: 9999,
+            pointerEvents: "none",
+          }}>
+            {overlayMessage}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 
