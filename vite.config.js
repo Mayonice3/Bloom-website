@@ -5,9 +5,9 @@ export default defineConfig({
   plugins: [react()],
   base: "/Bloom-website/",
   server: {
-    allowedHosts: true
+    allowedHosts: ['.vercel.run']
   },
   preview: {
-    allowedHosts: true
+    allowedHosts: ['.vercel.run']
   }
 });
