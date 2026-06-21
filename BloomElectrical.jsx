@@ -304,7 +304,7 @@ style.textContent = `
   /* scrolling brands */
   .brands-track {
     display: flex; gap: 12px;
-    animation: scrollBrands 28s linear infinite;
+    animation: scrollBrands 55s linear infinite;
     width: max-content;
   }
   @keyframes scrollBrands {
@@ -346,22 +346,25 @@ style.textContent = `
   .brand-logo-wrap {
     display: inline-flex; align-items: center; justify-content: center;
     padding: 14px 32px; height: 64px;
-    background: #1A1D27;
+    background: transparent;
     border: 1px solid #E2E2E8;
     border-radius: 2px;
     cursor: default;
-    transition: border-color 0.35s ease;
+    transition: all 0.35s ease;
     white-space: nowrap;
   }
-  .brand-logo-wrap:hover { border-color: rgba(245,158,11,0.35); }
+  .brand-logo-wrap:hover {
+    border-color: #F59E0B;
+    background: rgba(245,158,11,0.03);
+  }
   .brand-logo {
-    height: 24px; max-width: 110px;
+    height: 32px; max-width: 120px;
     object-fit: contain;
-    filter: grayscale(1) brightness(0.15);
-    transition: filter 0.35s ease;
+    filter: grayscale(1) opacity(0.75);
+    transition: all 0.35s ease;
   }
   .brand-logo-wrap:hover .brand-logo {
-    filter: sepia(1) saturate(5) hue-rotate(5deg) brightness(0.95);
+    filter: none;
   }
   .brand-text-fallback {
     font-family: 'Barlow Condensed', sans-serif;
@@ -436,28 +439,31 @@ const testimonials = [
   },
 ];
 
-const clients = [
-  { icon: <Home size={18} />, label: "Homeowners" },
-  { icon: <Users size={18} />, label: "Landlords" },
-  { icon: <Building2 size={18} />, label: "Property Managers" },
-  { icon: <Layers size={18} />, label: "Developers" },
-  { icon: <Briefcase size={18} />, label: "Small Businesses" },
-  { icon: <Building2 size={18} />, label: "Commercial Owners" },
+const workedForClients = [
+  { name: "Brave The Crave", logo: `${import.meta.env.BASE_URL}worked%20for%20logos/Brave_The_Crave_res.png` },
+  { name: "Dosa Plaza Takapuna", logo: `${import.meta.env.BASE_URL}worked%20for%20logos/Dosa_Plaza___Takapuna_res.png` },
+  { name: "Flame Pizza", logo: `${import.meta.env.BASE_URL}worked%20for%20logos/Flame___Pizza_res.png` },
+  { name: "Yogiji New Zealand Limited", logo: `${import.meta.env.BASE_URL}worked%20for%20logos/Yogiji_New_Zealand_Limited_res.png` },
+  { name: "Charcoal Chicken", logo: `${import.meta.env.BASE_URL}worked%20for%20logos/charcoal_chicken.png` },
+  { name: "Charcoal Chicken Takanini", logo: `${import.meta.env.BASE_URL}worked%20for%20logos/charcoal_chicken_takanini-res.png` },
+  { name: "Real Zea Property Management", logo: `${import.meta.env.BASE_URL}worked%20for%20logos/relzea-res.png` },
 ];
 
 const brands = [
-  { name: "Rinnai", logo: "https://logo.clearbit.com/rinnai.com" },
-  { name: "Haier", logo: "https://logo.clearbit.com/haier.com" },
-  { name: "ABB", logo: "https://logo.clearbit.com/abb.com" },
-  { name: "Panasonic", logo: "https://logo.clearbit.com/panasonic.com" },
-  { name: "PDL", logo: "https://logo.clearbit.com/pdl.co.nz" },
-  { name: "Daikin", logo: "https://logo.clearbit.com/daikin.com" },
-  { name: "Schneider", logo: "https://logo.clearbit.com/se.com" },
-  { name: "Prolux", logo: "https://logo.clearbit.com/prolux.co.nz" },
-  { name: "Superlux", logo: "https://logo.clearbit.com/superlux.co.nz" },
-  { name: "G-Light", logo: "https://logo.clearbit.com/g-light.co.nz" },
-  { name: "Provision", logo: "https://logo.clearbit.com/provision-isr.com" },
-  { name: "Parmaco", logo: "https://logo.clearbit.com/parmaco.co.nz" },
+  { name: "Rinnai", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/rinnai-res.png` },
+  { name: "Haier", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/Haier-resized.png` },
+  { name: "ABB", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/abb-res.png` },
+  { name: "Panasonic", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/panasonic-res.png` },
+  { name: "PDL", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/pdl-res.png` },
+  { name: "Daikin", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/daikin-res.png` },
+  { name: "Schneider", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/Schneider-res.png` },
+  { name: "Prolux", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/prolux-res.png` },
+  { name: "Superlux", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/superlux-res.png` },
+  { name: "G-Light", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/g-light-res.png` },
+  { name: "Provision", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/provision-res.png` },
+  { name: "Parmaco", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/parmaco-res.png` },
+  { name: "AAP", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/AAP-res.png` },
+  { name: "Clipsal", logo: `${import.meta.env.BASE_URL}worked%20with%20logos/clipsal-res.png` },
 ];
 
 const footerElec = [
@@ -1065,18 +1071,24 @@ function Testimonials() {
 }
 
 function WhoWeWorkWith() {
+  const quadrupled = [
+    ...workedForClients,
+    ...workedForClients,
+    ...workedForClients,
+    ...workedForClients
+  ];
   return (
-    <section style={{ background: "#FFFFFF", padding: "60px 24px" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <div style={{ textAlign: "left", marginBottom: 32 }}>
-          <SectionLabel>Our Clients</SectionLabel>
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "flex-start" }}>
-          {clients.map((c, i) => (
-            <div key={i} className="client-pill">
-              <span style={{ color: "#01f9c6" }}>{c.icon}</span>
-              <span>{c.label}</span>
-            </div>
+    <section style={{ background: "#FFFFFF", padding: "60px 0" }}>
+      <div style={{ textAlign: "left", marginBottom: 28, padding: "0 24px", maxWidth: 1280, margin: "0 auto" }}>
+        <SectionLabel>Our Clients</SectionLabel>
+        <p style={{ color: "#111111", fontSize: "0.88rem", marginTop: 4 }}>
+          Trusted by homeowners, property managers, and businesses across Auckland.
+        </p>
+      </div>
+      <div className="brands-mask">
+        <div className="brands-track">
+          {quadrupled.map((c, i) => (
+            <BrandLogo key={i} name={c.name} logo={c.logo} />
           ))}
         </div>
       </div>
