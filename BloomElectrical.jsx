@@ -291,6 +291,18 @@ style.textContent = `
     }
   }
 
+  .hero-image-mobile {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .hero-bg-desktop {
+      display: none !important;
+    }
+    .hero-image-mobile {
+      display: block !important;
+    }
+  }
+
   /* diagonal hero pattern */
   .hero-pattern {
     background-image:
@@ -846,7 +858,7 @@ function Hero() {
 
       {/* static background image mode */}
       {HERO_BG_MODE === 'image' && (
-        <div style={{
+        <div className="hero-bg-desktop" style={{
           position: "absolute", inset: 0, zIndex: 1,
           backgroundImage: `url(${HERO_BG_IMAGE})`,
           backgroundSize: "cover",
@@ -892,13 +904,30 @@ function Hero() {
             Tired of juggling tradespeople? Bloom Electrical and Hardware Services is your one-stop shop for electrical, solar, CCTV, renovations, plumbing, and more — all under one trusted team.
           </p>
 
-          <div className="reveal delay-3" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
+          <div className="reveal delay-3" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 32 }}>
             <a href="#contact" className="btn-amber">
               Get a Free Quote <ArrowRight size={16} />
             </a>
             <a href="tel:0800225666" className="btn-ghost">
               <Phone size={16} /> Call 0800 225 666
             </a>
+          </div>
+
+          {/* Mobile Image (rendered below copy on mobile, hidden on desktop) */}
+          <div className="hero-image-mobile reveal delay-4" style={{ marginTop: "24px" }}>
+            <img 
+              src={HERO_BG_IMAGE} 
+              alt="Bloom Electrical & Hardware" 
+              style={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "350px",
+                objectFit: "cover",
+                borderRadius: "4px",
+                border: "1px solid rgba(0, 0, 0, 0.1)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+              }} 
+            />
           </div>
         </div>
       </div>
