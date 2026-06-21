@@ -6,5 +6,8 @@ export default defineConfig({
   base: "/Bloom-website/",
   server: {
     allowedHosts: true
+  },
+  preview: {
+    allowedHosts: true
   }
 });
