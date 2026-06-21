@@ -131,13 +131,6 @@ style.textContent = `
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #01f9c6;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-label::before {
-    content: '';
-    display: inline-block;
-    width: 24px; height: 2px;
-    background: #01f9c6;
   }
 
   /* pill tag */
