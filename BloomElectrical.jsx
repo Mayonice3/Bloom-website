@@ -3,7 +3,7 @@ import { initParticleBuilding } from "./ParticleBuilding.js";
 import {
   Zap, Wrench, Phone, Mail, MapPin, Clock, Shield, Star,
   ArrowRight, Menu, X, Facebook, Instagram,
-  ChevronRight, Home, Building2, Users, Briefcase, Layers,
+  ChevronRight, Home, Building2, Users, Briefcase, Layers, ArrowUpRight,
 } from "lucide-react";
 
 /* ─── Google Fonts ─────────────────────────────────────────────── */
@@ -216,15 +216,90 @@ style.textContent = `
   /* stats grid */
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    width: 80%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+    width: 100%;
+    max-width: 1100px;
     margin: 0 auto;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 520px) {
     .stats-grid {
       grid-template-columns: 1fr;
-      width: 90%;
+    }
+  }
+
+  .stat-card-base {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stat-card-base:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .stat-card-1 {
+    background: #F59E0B;
+    color: #0F1117;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px;
+  }
+
+  .stat-card-2 {
+    background: #01f9c6;
+    color: #0F1117;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px;
+  }
+
+  .stat-card-3 {
+    grid-column: span 2;
+    background: #111111;
+    color: #FFFFFF;
+    min-height: 130px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+  }
+  @media (max-width: 520px) {
+    .stat-card-3 {
+      grid-column: span 1;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  }
+
+  .stat-card-3-line {
+    flex-grow: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 0 24px;
+    min-width: 20px;
+  }
+  @media (max-width: 520px) {
+    .stat-card-3-line {
+      display: none;
+    }
+  }
+
+  .stat-card-3-slash {
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 24px;
+  }
+  @media (max-width: 520px) {
+    .stat-card-3-slash {
+      display: none;
     }
   }
 
@@ -605,6 +680,58 @@ function SectionHeading({ children }) {
       {children}
     </h2>
   );
+}
+
+function AnimatedCounter({ value, duration = 1500 }) {
+  const [count, setCount] = useState(0);
+  const elementRef = useRef(null);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const numericTarget = parseInt(value, 10);
+    if (isNaN(numericTarget)) {
+      setCount(value);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          const end = numericTarget;
+          const startTime = performance.now();
+
+          const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = progress * (2 - progress);
+            const currentCount = Math.floor(easeProgress * end);
+
+            setCount(currentCount);
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              setCount(end);
+            }
+          };
+
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [value, duration]);
+
+  const suffix = value.toString().includes("+") ? "+" : "";
+
+  return <span ref={elementRef}>{count}{suffix}</span>;
 }
 
 /* ─── Sections ───────────────────────────────────────────────────── */
@@ -1115,55 +1242,98 @@ function HowItWorks() {
       {/* Stat cards */}
       <div style={{ padding: "24px 0" }}>
         <div className="stats-grid">
-          {stats.map(({ Icon, value, label }, i) => (
-            <div key={i} className={`reveal delay-${(i % 3) + 1}`} style={{
-              position: "relative",
-              background: "#F59E0B",
-              clipPath: "polygon(0 0, calc(100% - 52px) 0, 100% 52px, 100% 100%, 0 100%)",
-              minHeight: 340,
+          {/* Card 1 */}
+          <div className="stat-card-base stat-card-1 reveal delay-1">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                opacity: 0.8,
+              }}>
+                Homes Serviced
+              </span>
+              <Home size={22} strokeWidth={1.5} style={{ opacity: 0.8 }} />
+            </div>
+
+            <div style={{ height: "1px", background: "rgba(15, 17, 23, 0.12)", margin: "16px 0" }} />
+
+            <div style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: "clamp(3.5rem, 5.5vw, 6.5rem)",
+              fontWeight: 800,
+              lineHeight: 0.9,
+              letterSpacing: "-0.03em",
+            }}>
+              <AnimatedCounter value="200+" />
+            </div>
+          </div>
+
+          {/* Card 2 */}
+          <div className="stat-card-base stat-card-2 reveal delay-2">
+            <div style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: "clamp(3.5rem, 5.5vw, 6.5rem)",
+              fontWeight: 800,
+              lineHeight: 0.9,
+              letterSpacing: "-0.03em",
+            }}>
+              <AnimatedCounter value="50+" />
+            </div>
+
+            <div style={{ height: "1px", background: "rgba(15, 17, 23, 0.12)", margin: "16px 0" }} />
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                opacity: 0.8,
+              }}>
+                Happy Clients
+              </span>
+              <ArrowUpRight size={22} strokeWidth={1.5} style={{ opacity: 0.8 }} />
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div className="stat-card-base stat-card-3 reveal delay-3">
+            <div style={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+              <span style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: "clamp(3.5rem, 5.5vw, 6.5rem)",
+                fontWeight: 800,
+                lineHeight: 0.9,
+                letterSpacing: "-0.03em",
+              }}>
+                <AnimatedCounter value="5" />
+              </span>
+              <div className="stat-card-3-line" />
+            </div>
+
+            <div className="stat-card-3-slash">/</div>
+
+            <div style={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "flex-end",
-              padding: "36px 32px",
-              overflow: "hidden",
+              gap: "4px",
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              textAlign: "left",
+              flexShrink: 0,
             }}>
-              <div style={{
-                position: "absolute",
-                right: "-4%",
-                top: "50%",
-                transform: "translateY(-55%)",
-                opacity: 0.12,
-                color: "#0F1117",
-                pointerEvents: "none",
-                lineHeight: 0,
-              }}>
-                <Icon size={240} strokeWidth={0.7} />
-              </div>
-
-              <div style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontWeight: 300,
-                fontSize: "clamp(3.5rem, 4.5vw, 5.5rem)",
-                color: "#0F1117",
-                lineHeight: 1,
-                marginBottom: 12,
-                letterSpacing: "-0.03em",
-                textAlign: "left",
-              }}>
-                {value}
-              </div>
-
-              <div style={{
-                color: "rgba(15,17,23,0.65)",
-                fontSize: "0.85rem",
-                fontWeight: 400,
-                lineHeight: 1.5,
-                textAlign: "left",
-              }}>
-                {label}
-              </div>
+              <div style={{ color: "rgba(255, 255, 255, 0.6)" }}>Years — Service</div>
+              <div style={{ color: "#F59E0B" }}>Dedicated Support</div>
+              <div style={{ color: "rgba(255, 255, 255, 0.6)" }}>Certified &amp; Insured &lt;</div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1539,6 +1709,7 @@ function Footer() {
 function Map() {
   const mapRef = useRef(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [overlayType, setOverlayType] = useState("desktop");
   const overlayTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -1566,13 +1737,17 @@ function Map() {
       }
 
       const center = [-36.8485, 174.7633];
+      const isMobile = window.L.Browser.mobile;
       const map = window.L.map("map-container", {
         center: center,
         zoom: 10.5,
         zoomSnap: 0.5,
         zoomControl: false,
         attributionControl: false,
-        scrollWheelZoom: false
+        scrollWheelZoom: false,
+        dragging: !isMobile,
+        touchZoom: !isMobile,
+        tap: !isMobile
       });
       mapRef.current = map;
 
@@ -1610,6 +1785,7 @@ function Map() {
     const mapContainer = document.getElementById("map-container");
     const handleWheel = (e) => {
       if (!(e.metaKey || e.ctrlKey)) {
+        setOverlayType("desktop");
         setShowOverlay(true);
         if (overlayTimeoutRef.current) clearTimeout(overlayTimeoutRef.current);
         overlayTimeoutRef.current = setTimeout(() => {
@@ -1618,9 +1794,44 @@ function Map() {
       }
     };
 
+    const handleTouchStart = (e) => {
+      if (!mapRef.current) return;
+      if (e.touches.length >= 2) {
+        mapRef.current.dragging.enable();
+        mapRef.current.touchZoom.enable();
+      } else {
+        mapRef.current.dragging.disable();
+        mapRef.current.touchZoom.disable();
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (!mapRef.current) return;
+      if (e.touches.length === 1) {
+        setOverlayType("mobile");
+        setShowOverlay(true);
+        if (overlayTimeoutRef.current) clearTimeout(overlayTimeoutRef.current);
+        overlayTimeoutRef.current = setTimeout(() => {
+          setShowOverlay(false);
+        }, 1500);
+      } else if (e.touches.length >= 2) {
+        setShowOverlay(false);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (mapRef.current) {
+        mapRef.current.dragging.disable();
+        mapRef.current.touchZoom.disable();
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
     mapContainer?.addEventListener("wheel", handleWheel, { passive: true });
+    mapContainer?.addEventListener("touchstart", handleTouchStart, { passive: true });
+    mapContainer?.addEventListener("touchmove", handleTouchMove, { passive: true });
+    mapContainer?.addEventListener("touchend", handleTouchEnd, { passive: true });
 
     return () => {
       if (script) {
@@ -1629,6 +1840,9 @@ function Map() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
       mapContainer?.removeEventListener("wheel", handleWheel);
+      mapContainer?.removeEventListener("touchstart", handleTouchStart);
+      mapContainer?.removeEventListener("touchmove", handleTouchMove);
+      mapContainer?.removeEventListener("touchend", handleTouchEnd);
       if (overlayTimeoutRef.current) {
         clearTimeout(overlayTimeoutRef.current);
       }
@@ -1665,7 +1879,7 @@ function Map() {
             zIndex: 9999,
             pointerEvents: "none",
           }}>
-            {overlayMessage}
+            {overlayType === "mobile" ? "Use two fingers to move the map" : overlayMessage}
           </div>
         )}
       </div>
