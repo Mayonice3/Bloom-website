@@ -1071,7 +1071,7 @@ function HowItWorks() {
       {/* Process steps */}
       <div style={{ padding: "clamp(48px, 8vw, 96px) 24px clamp(32px, 5vw, 56px)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ marginBottom: 48 }}>
+          <div className="reveal" style={{ marginBottom: 48 }}>
             <SectionLabel>The Process</SectionLabel>
             <SectionHeading>Simple from start to finish.</SectionHeading>
           </div>
@@ -1083,7 +1083,7 @@ function HowItWorks() {
             position: "relative",
           }}>
             {steps.map((step, i) => (
-              <div key={i} style={{ position: "relative" }}>
+              <div key={i} style={{ position: "relative" }} className={`reveal delay-${(i % 4) + 1}`}>
                 <div 
                   ref={el => cardRefs.current[i] = el}
                   className={`process-card ${activeStep === i ? "active" : ""}`}
@@ -1116,7 +1116,7 @@ function HowItWorks() {
       <div style={{ padding: "24px 0" }}>
         <div className="stats-grid">
           {stats.map(({ Icon, value, label }, i) => (
-            <div key={i} style={{
+            <div key={i} className={`reveal delay-${(i % 3) + 1}`} style={{
               position: "relative",
               background: "#F59E0B",
               clipPath: "polygon(0 0, calc(100% - 52px) 0, 100% 52px, 100% 100%, 0 100%)",
@@ -1174,7 +1174,7 @@ function Projects() {
   return (
     <section id="projects" style={{ background: "#FFFFFF", padding: "clamp(48px, 8vw, 96px) 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16, marginBottom: 40 }}>
+        <div className="reveal" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16, marginBottom: 40 }}>
           <div>
             <SectionLabel>Recent Work</SectionLabel>
             <SectionHeading>Work we're proud of.</SectionHeading>
@@ -1186,7 +1186,7 @@ function Projects() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
           {projects.map((p, i) => (
-            <div key={i} className="process-card" style={{ padding: 0, overflow: "hidden" }}>
+            <div key={i} className={`process-card reveal delay-${(i % 3) + 1}`} style={{ padding: 0, overflow: "hidden" }}>
               <img
                 src={p.img}
                 alt={p.title}
@@ -1211,14 +1211,14 @@ function Testimonials() {
   return (
     <section id="testimonials" style={{ background: "#FFFFFF", padding: "clamp(48px, 8vw, 96px) 24px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <div style={{ textAlign: "left", marginBottom: 48 }}>
+        <div className="reveal" style={{ textAlign: "left", marginBottom: 48 }}>
           <SectionLabel>Client Feedback</SectionLabel>
           <SectionHeading>Trusted by homeowners, landlords, and businesses.</SectionHeading>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
           {testimonials.map((t, i) => (
-            <div key={i} className="process-card" style={{ padding: "32px 28px" }}>
+            <div key={i} className={`process-card reveal delay-${(i % 3) + 1}`} style={{ padding: "32px 28px" }}>
               <Stars />
               <p style={{ color: "rgba(255,255,255,0.85)", lineHeight: 1.7, fontSize: "0.93rem", marginBottom: 24, fontStyle: "italic" }}>
                 "{t.text}"
@@ -1243,7 +1243,7 @@ function WhoWeWorkWith() {
     ...workedForClients
   ];
   return (
-    <section style={{ background: "#FFFFFF", padding: "clamp(36px, 6vw, 64px) 0" }}>
+    <section className="reveal" style={{ background: "#FFFFFF", padding: "clamp(36px, 6vw, 64px) 0" }}>
       <div style={{ textAlign: "left", marginBottom: 28, padding: "0 24px", maxWidth: 1280, margin: "0 auto" }}>
         <SectionHeading>Our Clients</SectionHeading>
       </div>
@@ -1275,7 +1275,7 @@ function BrandLogo({ name, logo }) {
 function BrandsStrip() {
   const doubled = [...brands, ...brands];
   return (
-    <section style={{ background: "#FFFFFF", padding: "clamp(36px, 6vw, 64px) 0" }}>
+    <section className="reveal" style={{ background: "#FFFFFF", padding: "clamp(36px, 6vw, 64px) 0" }}>
       <div style={{ textAlign: "left", marginBottom: 28, padding: "0 24px", maxWidth: 1280, margin: "0 auto" }}>
         <SectionHeading>Industry Partners</SectionHeading>
       </div>
@@ -1324,7 +1324,7 @@ function CTABanner() {
     <section id="contact" style={{ background: "#F59E0B", padding: "clamp(48px, 8vw, 96px) 24px" }}>
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
         {/* Heading */}
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
+        <div className="reveal" style={{ textAlign: "center", marginBottom: 48 }}>
           <h2 className="font-display" style={{
             fontSize: "clamp(2rem, 4vw, 3.2rem)",
             fontWeight: 800, textTransform: "uppercase",
@@ -1338,7 +1338,7 @@ function CTABanner() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="contact-form">
+        <form onSubmit={handleSubmit} className="contact-form reveal delay-1">
           <input
             name="name" type="text" placeholder="Your Name" required
             value={form.name} onChange={handleChange}
@@ -1644,11 +1644,11 @@ function Map() {
 
   return (
     <section id="service-area" style={{ background: "#FFFFFF", paddingTop: "clamp(48px, 8vw, 96px)" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto 40px", padding: "0 24px" }}>
+      <div className="reveal" style={{ maxWidth: 1280, margin: "0 auto 40px", padding: "0 24px" }}>
         <SectionLabel>Service Area</SectionLabel>
         <SectionHeading>Where We Operate</SectionHeading>
       </div>
-      <div style={{ position: "relative", width: "100%", height: 380, background: "#FFFFFF" }}>
+      <div className="reveal delay-1" style={{ position: "relative", width: "100%", height: 380, background: "#FFFFFF" }}>
         <div id="map-container" style={{ width: "100%", height: "100%" }} />
         {showOverlay && (
           <div style={{
