@@ -191,7 +191,7 @@ style.textContent = `
     height: 100%;
     transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
   }
-  .process-card:hover {
+  .process-card:hover, .process-card.active {
     border-left-color: #01f9c6;
     transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(1,249,198,0.2);
@@ -200,7 +200,7 @@ style.textContent = `
     background: #F59E0B;
     transition: background-color 0.25s, color 0.25s;
   }
-  .process-card:hover .step-circle {
+  .process-card:hover .step-circle, .process-card.active .step-circle {
     background: #01f9c6;
   }
 
@@ -460,6 +460,23 @@ style.textContent = `
     .cut-bottom { clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%); padding-bottom: 60px; }
     .cut-top { clip-path: polygon(0 2%, 100% 0, 100% 100%, 0 100%); }
   }
+
+  /* Reveal on Scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal.delay-1 { transition-delay: 100ms; }
+  .reveal.delay-2 { transition-delay: 200ms; }
+  .reveal.delay-3 { transition-delay: 300ms; }
+  .reveal.delay-4 { transition-delay: 400ms; }
+
 `;
 document.head.appendChild(style);
 
@@ -733,9 +750,11 @@ function Hero() {
 
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 40px", width: "100%", position: "relative", zIndex: 3 }}>
         <div style={{ maxWidth: 760 }}>
-          <SectionLabel>Auckland, NZ</SectionLabel>
+          <div className="reveal">
+            <SectionLabel>Auckland, NZ</SectionLabel>
+          </div>
 
-          <h1 className="font-display" style={{
+          <h1 className="font-display reveal delay-1" style={{
             fontSize: "clamp(3.2rem, 7vw, 6rem)",
             fontWeight: 800,
             textTransform: "uppercase",
@@ -748,7 +767,7 @@ function Hero() {
             <span style={{ color: "#F59E0B" }}>Home & Business.</span>
           </h1>
 
-          <p style={{
+          <p className="reveal delay-2" style={{
             fontSize: "clamp(1rem, 1.8vw, 1.2rem)",
             color: "#111111",
             lineHeight: 1.7,
@@ -758,7 +777,7 @@ function Hero() {
             Tired of juggling tradespeople? Bloom Electrical and Hardware Services is your one-stop shop for electrical, solar, CCTV, renovations, plumbing, and more — all under one trusted team.
           </p>
 
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
+          <div className="reveal delay-3" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
             <a href="#contact" className="btn-amber">
               Get a Free Quote <ArrowRight size={16} />
             </a>
@@ -983,12 +1002,12 @@ function Services() {
 
   return (
     <section id="services" style={{ background: "#FFFFFF" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "clamp(48px, 8vw, 96px) 24px clamp(24px, 4vw, 48px)", textAlign: "left" }}>
+      <div className="reveal" style={{ maxWidth: 1280, margin: "0 auto", padding: "clamp(48px, 8vw, 96px) 24px clamp(24px, 4vw, 48px)", textAlign: "left" }}>
         <SectionLabel>Our Services</SectionLabel>
         <SectionHeading>Two Specialisms. One Company.</SectionHeading>
       </div>
 
-      <div className="services-split">
+      <div className="services-split reveal delay-1">
         <ServicePanel
           side="elec" Icon={Zap}
           title="Electrical"
@@ -1010,6 +1029,43 @@ function Services() {
 }
 
 function HowItWorks() {
+  const [activeStep, setActiveStep] = useState(null);
+  const cardRefs = useRef([]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth > 768) {
+        if (activeStep !== null) setActiveStep(null);
+        return;
+      }
+
+      const centerY = window.innerHeight / 2;
+      let closestIndex = null;
+      let minDistance = Infinity;
+
+      cardRefs.current.forEach((ref, index) => {
+        if (!ref) return;
+        const rect = ref.getBoundingClientRect();
+        const cardCenterY = rect.top + rect.height / 2;
+        const distance = Math.abs(centerY - cardCenterY);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      if (closestIndex !== null && closestIndex !== activeStep) {
+        setActiveStep(closestIndex);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [activeStep]);
+
   return (
     <section id="about" style={{ background: "#FFFFFF" }}>
       {/* Process steps */}
@@ -1028,7 +1084,10 @@ function HowItWorks() {
           }}>
             {steps.map((step, i) => (
               <div key={i} style={{ position: "relative" }}>
-                <div className="process-card">
+                <div 
+                  ref={el => cardRefs.current[i] = el}
+                  className={`process-card ${activeStep === i ? "active" : ""}`}
+                >
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 18, marginBottom: 20 }}>
                     <div className="step-circle">{step.n}</div>
                     <div>
@@ -1621,7 +1680,31 @@ export default function BloomElectrical() {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Setup IntersectionObserver for fade-in on scroll
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px 0px -8% 0px",
+      threshold: 0.02,
+    };
+
+    const observerCallback = (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          obs.unobserve(entry.target);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const elements = document.querySelectorAll(".reveal");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   return (
